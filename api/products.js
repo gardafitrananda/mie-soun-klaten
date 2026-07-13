@@ -16,8 +16,9 @@ module.exports = async function handler(req, res) {
         if (req.method === 'POST') {
             const { name, price, old_price, description, gambar_url, badge } = req.body;
             
-            const numericPrice = typeof price === 'string' ? parseInt(price.replace(/[^0-9]/g, '')) : parseInt(price);
-            const numericOldPrice = typeof old_price === 'string' ? parseInt(old_price.replace(/[^0-9]/g, '')) : parseInt(old_price || 0);
+            // Ganti bagian parsing harga di kedua block (POST & PUT) dengan ini:
+            const numericPrice = (price === "" || isNaN(parseInt(price))) ? 0 : parseInt(price);
+            const numericOldPrice = (old_price === "" || isNaN(parseInt(old_price))) ? 0 : parseInt(old_price);
 
             const result = await sql`
                 INSERT INTO products (name, price, old_price, description, gambar_url, badge) 
@@ -30,8 +31,9 @@ module.exports = async function handler(req, res) {
         if (req.method === 'PUT') {
             const { id, name, price, old_price, description, gambar_url, badge } = req.body;
             
-            const numericPrice = typeof price === 'string' ? parseInt(price.replace(/[^0-9]/g, '')) : parseInt(price);
-            const numericOldPrice = typeof old_price === 'string' ? parseInt(old_price.replace(/[^0-9]/g, '')) : parseInt(old_price || 0);
+            // Ganti bagian parsing harga di kedua block (POST & PUT) dengan ini:
+            const numericPrice = (price === "" || isNaN(parseInt(price))) ? 0 : parseInt(price);
+            const numericOldPrice = (old_price === "" || isNaN(parseInt(old_price))) ? 0 : parseInt(old_price);
 
             await sql`
                 UPDATE products 
