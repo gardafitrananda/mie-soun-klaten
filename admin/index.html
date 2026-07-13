@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Admin Test — Mie Soun Klaten</title>
+
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+
+    <!-- CSS Admin -->
+    <link rel="stylesheet" href="css/style.css" />
+</head>
+<body>
+
+    <!-- ===== SIDEBAR ===== -->
+    <aside class="sidebar" id="sidebar">
+        <div class="logo"><i class="fas fa-utensils"></i> Admin</div>
+        <nav>
+            <a href="#" class="active" data-tab="products"><i class="fas fa-box"></i> Produk</a>
+            <a href="#" data-tab="posts"><i class="fas fa-newspaper"></i> Artikel</a>
+            <a href="#" data-tab="testimonials"><i class="fas fa-star"></i> Testimoni</a>
+            <a href="#" data-tab="users"><i class="fas fa-users-cog"></i> User</a>
+        </nav>
+        <div class="user">
+            <div class="avatar">A</div>
+            <div class="info">
+                <div class="name">Admin</div>
+                <div class="role">Administrator</div>
+            </div>
+            <a href="#" class="logout" onclick="alert('Logout (mock)')"><i class="fas fa-sign-out-alt"></i></a>
+        </div>
+    </aside>
+
+    <!-- ===== OVERLAY (mobile) ===== -->
+    <div class="overlay" id="overlay"></div>
+
+    <!-- ===== MAIN ===== -->
+    <div class="main">
+
+        <!-- Header -->
+        <div class="header">
+            <div style="display:flex;align-items:center;gap:12px;">
+                <button class="menu-toggle" id="menuToggle"><i class="fas fa-bars"></i></button>
+                <h1 id="pageTitle">Manajemen Produk</h1>
+            </div>
+            <div class="actions">
+                <input type="text" placeholder="Cari..." id="searchInput" />
+                <button class="btn btn-primary" id="btnAdd"><i class="fas fa-plus"></i> Tambah</button>
+            </div>
+        </div>
+
+        <!-- Panel: Produk -->
+        <div class="panel" id="panel-products">
+            <div class="card">
+                <table>
+                    <thead><tr><th>ID</th><th>Nama</th><th>Harga</th><th>Stok</th><th>Aksi</th></tr></thead>
+                    <tbody id="productsBody"></tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- Panel: Artikel -->
+        <div class="panel" id="panel-posts" style="display:none;">
+            <div class="card">
+                <table>
+                    <thead><tr><th>ID</th><th>Judul</th><th>Status</th><th>Tanggal</th><th>Aksi</th></tr></thead>
+                    <tbody id="postsBody"></tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- Panel: Testimoni -->
+        <div class="panel" id="panel-testimonials" style="display:none;">
+            <div class="card">
+                <table>
+                    <thead><tr><th>ID</th><th>Nama</th><th>Testimoni</th><th>Rating</th><th>Aksi</th></tr></thead>
+                    <tbody id="testimonialsBody"></tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- Panel: Users -->
+        <div class="panel" id="panel-users" style="display:none;">
+            <div class="card">
+                <table>
+                    <thead><tr><th>ID</th><th>Nama</th><th>Email</th><th>Role</th><th>Aksi</th></tr></thead>
+                    <tbody id="usersBody"></tbody>
+                </table>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- ===== MODAL ===== -->
+    <div class="modal-overlay" id="modal">
+        <div class="modal-box">
+            <div class="modal-header">
+                <h3 id="modalTitle">Tambah</h3>
+                <span class="close" onclick="closeModal()">&times;</span>
+            </div>
+            <div id="modalBody"></div>
+            <div class="form-actions">
+                <button class="btn btn-outline" onclick="closeModal()">Batal</button>
+                <button class="btn btn-success" id="saveBtn">Simpan</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- ===== JS Admin ===== -->
+    <script src="js/script.js"></script>
+
+</body>
+</html>

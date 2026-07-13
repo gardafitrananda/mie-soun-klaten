@@ -1,0 +1,528 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Mie Soun Khas Klaten — Asli Lezat!</title>
+<link href="https://fonts.googleapis.com/css2?family=Pacifico&family=Nunito:wght@400;600;700;800;900&family=Playfair+Display:ital,wght@0,700;1,400&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<!-- NAVBAR -->
+<nav>
+  <div class="nav-logo">🍜 Mie Soun Klaten</div>
+  <ul class="nav-links">
+    <li><a href="#produk">Produk</a></li>
+    <li><a href="#galeri">Galeri Foto</a></li>
+    <li><a href="#cara-beli">Cara Beli</a></li>
+    <li><a href="#testimoni">Testimoni</a></li>
+    <li><a href="#kontak">Kontak</a></li>
+  </ul>
+  <button class="nav-cta" onclick="bukaWA()">📱 Pesan via WA</button>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-inner">
+    <div>
+      <div class="hero-badge">🏆 Produk Unggulan Klaten Sejak 2007</div>
+      <h1>Mie Soun<br><span>Khas Klaten</span><br>Asli Lezat!</h1>
+      <p class="hero-sub">
+        Soun Pati Aren premium asli Klaten.<br>
+        Kenyal, alami, tanpa pemutih & pengawet.<br>
+        Cocok untuk aneka masakan nusantara.
+      </p>
+      <div class="hero-btns">
+        <a href="javascript:void(0)" onclick="bukaWA()" class="btn-primary">📱 Pesan via WhatsApp</a>
+        <a href="javascript:void(0)" onclick="bukaShopee()" class="btn-shopee">🛍️ Beli di Shopee</a>
+        <button class="btn-outline" onclick="document.getElementById('galeri').scrollIntoView({behavior:'smooth'})">📸 Lihat Foto Produk</button>
+      </div>
+    </div>
+    <div class="hero-img-wrap">
+      <!-- Foto produk nyata dari Unsplash (mie/soun) -->
+      <img
+        class="hero-product-img"
+        src="FOTO PRODUK\produk cuy.png"
+        alt="Mie Soun Klaten"
+        onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"
+      >
+      <div class="bowl" style="display:none">🍜</div>
+      <div class="bubble b1">⭐ 4.9 / 5 Rating</div>
+      <div class="bubble b2">✅ Halal-friendly</div>
+      <div class="bubble b3">🚚 Free Ongkir</div>
+    </div>
+  </div>
+  <div class="wave">
+    <svg viewBox="0 0 1200 70" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg" width="100%" height="70">
+      <path d="M0,0 C300,70 900,70 1200,0 L1200,70 L0,70 Z" fill="#FFFBF5"/>
+    </svg>
+  </div>
+</section>
+
+<!-- TRUST BAR -->
+<div class="trust-bar">
+  <div class="trust-item"><span class="trust-icon">✅</span>100% Halal-friendly</div>
+  <div class="trust-item"><span class="trust-icon">🌿</span>Bebas Pengawet &amp; Kimia</div>
+  <div class="trust-item"><span class="trust-icon">🚚</span>Kirim ke Seluruh Indonesia</div>
+  <div class="trust-item"><span class="trust-icon">🏡</span>Produksi Lokal Klaten</div>
+  <div class="trust-item"><span class="trust-icon">💯</span>Garansi Kepuasan</div>
+</div>
+
+<!-- FEATURES -->
+<div class="section-wrap">
+  <div class="section">
+    <p class="section-title">Kenapa Pilih Kami?</p>
+    <p class="section-sub">Kualitas terjamin, cita rasa autentik yang tak tertandingi sejak generasi ke generasi</p>
+    <div class="features">
+      <div class="feat-card">
+        <div class="feat-icon">🌾</div>
+        <h3>Bahan Alami Pilihan</h3>
+        <p>Dibuat dari pati aren berkualitas tinggi
+           yang menghasilkan tekstur kenyal,
+           lembut, tidak mudah hancur dan tanpa pemutih atau pengawet.</p>
+      </div>
+      <div class="feat-card">
+        <div class="feat-icon">👨‍🍳</div>
+        <h3>Proses Tradisional</h3>
+        <p>Diproduksi secara tradisional oleh warga
+           Desa Manjung, Klaten untuk menjaga cita
+           rasa khas yang autentik.</p>
+      </div>
+      <div class="feat-card">
+        <div class="feat-icon">📦</div>
+        <h3>Kemasan Higienis</h3>
+        <p>Dikemas rapi dan bersih agar kualitas
+           tetap terjaga hingga sampai ke tangan
+           pelanggan di seluruh Indonesia.</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ===== GALERI FOTO PRODUK ASLI ===== -->
+<div class="gallery-bg section-wrap" id="galeri">
+  <div class="section">
+    <p class="section-title">📸 Foto Produk Asli Kami</p>
+    <p class="section-sub">Lihat keaslian produk kami — dari proses produksi hingga sajian siap makan. Klik foto untuk memperbesar!</p>
+    <div class="gallery-grid">
+
+      <!-- Foto besar (featured) -->
+      <div class="gallery-item featured" onclick="openLightbox(this)">
+        <img
+          src="FOTO PRODUK\IMG_7481.JPG"
+          alt="Soun Klaten - Produk Asli"
+          loading="lazy"
+        >
+        <div class="overlay">
+          <span class="overlay-label">🔍 Soun Cap Bintang — Produk Andalan Kami</span>
+        </div>
+      </div>
+
+      <!-- Foto kanan atas -->
+      <div class="gallery-item tall" onclick="openLightbox(this)">
+        <img
+          src="FOTO PRODUK\paket lagi.jpeg"
+          alt="Kemasan Produk Soun"
+          loading="lazy"
+        >
+        <div class="overlay">
+          <span class="overlay-label">🔍 Kemasan Rapi dan Aman Sampai Tujuan</span>
+        </div>
+      </div>
+
+      <!-- Baris kedua -->
+      <div class="gallery-item" onclick="openLightbox(this)">
+        <img
+          src="FOTO PRODUK\produksi.webp"
+          alt="Proses Produksi Tradisional"
+          loading="lazy"
+        >
+        <div class="overlay">
+          <span class="overlay-label">🔍 Proses Produksi Tradisional</span>
+        </div>
+      </div>
+
+      <div class="gallery-item" onclick="openLightbox(this)">
+        <img
+          src="FOTO PRODUK\pengeringan.jpg"
+          alt="Proses pengeringan alami di bawah sinar matahari"
+          loading="lazy"
+        >
+        <div class="overlay">
+          <span class="overlay-label">🔍 Proses Pengeringan Alami dibawah sinar Matahari</span>
+        </div>
+      </div>
+
+      <div class="gallery-item" onclick="openLightbox(this)">
+        <img
+          src="FOTO PRODUK\masak.jpg"
+          alt="Kelezatan Masakan Tumis Soun"
+          loading="lazy"
+        >
+        <div class="overlay">
+          <span class="overlay-label">🔍 Kelezatan Masakan Tumis Soun</span>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- Catatan untuk pelanggan -->
+    <div style="margin-top:1.5rem;background:#fff;border:2px solid #FFE0B2;border-radius:16px;padding:1.25rem 1.5rem;text-align:center">
+      <p style="color:#795548;font-size:.9rem;font-weight:700">
+        💡 <strong style="color:#BF360C">Ingin melihat foto produk kami yang lebih banyak?</strong>
+        Hubungi kami via WhatsApp untuk melihat katalog lengkap dan foto proses produksi langsung dari pabrik!
+      </p>
+    </div>
+  </div>
+</div>
+
+<!-- LIGHTBOX -->
+<div class="lightbox" id="lightbox" onclick="closeLightbox(event)">
+  <button class="lightbox-close" onclick="closeLightbox()">✕</button>
+  <img id="lightbox-img" src="" alt="">
+  <div class="lightbox-caption" id="lightbox-caption"></div>
+</div>
+
+<!-- PRODUCTS -->
+<div class="products-bg section-wrap" id="produk">
+  <div class="section">
+    <p class="section-title">Pilihan Produk Kami</p>
+    <p class="section-sub">Tersedia berbagai varian untuk kebutuhan memasak sehari-hari hingga oleh-oleh istimewa</p>
+    <div class="products">
+
+      <!-- 1 -->
+      <div class="prod-card">
+        <div class="prod-badge">🔥 Terlaris</div>
+        <div class="prod-img-wrap">
+          <img src="FOTO PRODUK\foto.jpg" alt="Mie Soun Cap Bintang Berat ±1Kg" loading="lazy" onerror="this.style.opacity='0'">
+        </div>
+        <div class="prod-info">
+          <h3>Mie Soun Cap Bintang Berat ±1Kg</h3>
+          <p>Soun klasik kenyal cocok untuk sop, bakso, dan tumisan favorit keluarga. Tidak mudah lembek.</p>
+          <div class="prod-footer">
+            <div>
+              <span class="prod-price">Rp34.595</span>
+              <span class="prod-price-old">Rp 43.960</span>
+            </div>
+            <div style="display:flex;gap:.4rem">
+              <button class="btn-buy" onclick="bukaShopee()">🛍️ Shopee</button>
+              <button class="btn-buy btn-buy-wa" onclick="bukaWA()">💬 WA</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 2 -->
+      <div class="prod-card">
+        <div class="prod-badge">⭐ Premium</div>
+        <div class="prod-img-wrap">
+          <img src="FOTO PRODUK\2kg tali.jpg" alt="Mie Soun Cap Pandawa Premium Berat ±2Kg" loading="lazy" onerror="this.style.opacity='0'">
+        </div>
+        <div class="prod-info">
+          <h3>Mie Soun Cap Pandawa Premium Berat ±2Kg</h3>
+          <p>Lebih tebal, lebih kenyal. Ideal untuk masakan berkuah dan stir-fry spesial. Pilihan koki rumahan.</p>
+          <div class="prod-footer">
+            <div>
+              <span class="prod-price">Rp 90.862</span>
+              <span class="prod-price-old">Rp 105.865</span>
+            </div>
+            <div style="display:flex;gap:.4rem">
+              <button class="btn-buy" onclick="bukaShopee()">🛍️ Shopee</button>
+              <button class="btn-buy btn-buy-wa" onclick="bukaWA()">💬 WA</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 3 -->
+      <div class="prod-card">
+        <div class="prod-badge">📦 Hemat</div>
+        <div class="prod-img-wrap">
+          <img src="FOTO PRODUK\4kg.jpg" alt="Mie Soun Cap Pandawa Berat ±4Kg" loading="lazy" onerror="this.style.opacity='0'">
+        </div>
+        <div class="prod-info">
+          <h3>Mie Soun Cap Pandawa Berat ±4Kg</h3>
+          <p>Ukuran ekonomis untuk keluarga besar atau usaha warung. Lebih hemat, kualitas tetap terjamin.</p>
+          <div class="prod-footer">
+            <div>
+              <span class="prod-price">Rp 130.369</span>
+              <span class="prod-price-old">Rp 150.342</span>
+            </div>
+            <div style="display:flex;gap:.4rem">
+              <button class="btn-buy" onclick="bukaShopee()">🛍️ Shopee</button>
+              <button class="btn-buy btn-buy-wa" onclick="bukaWA()">💬 WA</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 4 -->
+      <div class="prod-card">
+        <div class="prod-badge">💼 Grosir</div>
+        <div class="prod-img-wrap">
+          <img src="FOTO PRODUK\id-11134207-7ra0q-mcu1ibytayqrf1.jpg" alt="Mie Soun Cap Rajawali Berat ±1Kg" loading="lazy" onerror="this.style.opacity='0'">
+        </div>
+        <div class="prod-info">
+          <h3>Mie Soun Cap Rajawali Berat ±1Kg</h3>
+          <p>Soun 1 kg ekonomis, cocok untuk
+            usaha kuliner, hajatan, catering, restoran,
+            hingga stok kebutuhan keluarga di rumah.</p>
+          <div class="prod-footer">
+            <div>
+              <span class="prod-price">Rp 85.000</span>
+              <span class="prod-price-old">Rp 120.000</span>
+            </div>
+            <div style="display:flex;gap:.4rem">
+              <button class="btn-buy" onclick="bukaShopee()">🛍️ Shopee</button>
+              <button class="btn-buy btn-buy-wa" onclick="bukaWA()">💬 WA</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 5 -->
+      <div class="prod-card">
+        <div class="prod-badge">🎁 Oleh-oleh</div>
+        <div class="prod-img-wrap">
+          <img src="FOTO PRODUK\id-11134207-7ra0l-mcosyqr0kht38f.jpg" alt="Paket Hampers Spesial" loading="lazy" onerror="this.style.opacity='0'">
+        </div>
+        <div class="prod-info">
+          <h3>Mie Soun Cap Pandawa Berat ±2Kg</h3>
+          <p>Hadiah khas Klaten yang berkesan. Cocok untuk oleh-oleh, hantaran lebaran, dan souvenir pernikahan.</p>
+          <div class="prod-footer">
+            <div>
+              <span class="prod-price">Rp 66.680</span>
+              <span class="prod-price-old">Rp 76.875</span>
+            </div>
+            <div style="display:flex;gap:.4rem">
+              <button class="btn-buy" onclick="bukaShopee()">🛍️ Shopee</button>
+              <button class="btn-buy btn-buy-wa" onclick="bukaWA()">💬 WA</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 6 -->
+      <div class="prod-card">
+        <div class="prod-badge">🌶️ Varian Baru</div>
+        <div class="prod-img-wrap">
+          <img src="FOTO PRODUK\id-11134207-7ra0t-mcux1evlgljra0.jpg" alt="Mie Soun Cap Bajing Berat ±2,5Kg" loading="lazy" onerror="this.style.opacity='0'">
+        </div>
+        <div class="prod-info">
+          <h3>Mie Soun Cap Bajing Berat ±2,5Kg</h3>
+          <p>Soun Pati Aren 2,5 kg versi Cap Bajing,
+              cocok untuk catering, hajatan, restoran,
+              dan stok kebutuhan masak sehari-hari.</p>
+          <div class="prod-footer">
+            <div>
+              <span class="prod-price">Rp 80.676</span>
+              <span class="prod-price-old">Rp 89.534</span>
+            </div>
+            <div style="display:flex;gap:.4rem">
+              <button class="btn-buy" onclick="bukaShopee()">🛍️ Shopee</button>
+              <button class="btn-buy btn-buy-wa" onclick="bukaWA()">💬 WA</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<!-- CARA BELI -->
+<div class="steps-bg section-wrap" id="cara-beli">
+  <div class="section">
+    <p class="section-title">Cara Pesan Mudah</p>
+    <p class="section-sub">Pilih cara belanja yang paling nyaman buat kamu!</p>
+
+    <!-- TAB TOGGLE -->
+    <div class="tab-wrap">
+      <button class="tab-btn active" id="tab-wa" onclick="switchTab('wa')">
+        📱 Pesan via WhatsApp
+      </button>
+      <button class="tab-btn" id="tab-shopee" onclick="switchTab('shopee')">
+        🛍️ Beli di Shopee
+      </button>
+    </div>
+
+    <!-- STEPS WA -->
+    <div class="steps" id="steps-wa">
+      <div class="step-card">
+        <div class="step-num">1</div>
+        <div class="step-icon">🛒</div>
+        <h4>Pilih Produk</h4>
+        <p>Lihat daftar produk di halaman ini dan tentukan varian serta jumlah yang kamu inginkan.</p>
+      </div>
+      <div class="step-card">
+        <div class="step-num">2</div>
+        <div class="step-icon">💬</div>
+        <h4>Chat via WhatsApp</h4>
+        <p>Klik tombol WhatsApp, pesan otomatis akan terisi. Kami fast response &amp; siap bantu!</p>
+      </div>
+      <div class="step-card">
+        <div class="step-num">3</div>
+        <div class="step-icon">💳</div>
+        <h4>Konfirmasi &amp; Bayar</h4>
+        <p>Bayar via transfer bank atau dompet digital (GoPay, OVO, Dana). Kirim bukti ke WA kami.</p>
+      </div>
+      <div class="step-card">
+        <div class="step-num">4</div>
+        <div class="step-icon">📦</div>
+        <h4>Pesanan Dikirim</h4>
+        <p>Pesanan dikemas rapi &amp; dikirim via ekspedisi pilihan. Nomor resi dikirim ke WhatsApp kamu.</p>
+      </div>
+    </div>
+
+    <!-- STEPS SHOPEE -->
+    <div class="steps" id="steps-shopee" style="display:none">
+      <div class="step-card">
+        <div class="step-num">1</div>
+        <div class="step-icon">🔍</div>
+        <h4>Buka Toko Shopee</h4>
+        <p>Klik tombol "Toko Shopee" atau cari toko kami langsung di aplikasi Shopee.</p>
+      </div>
+      <div class="step-card">
+        <div class="step-num">2</div>
+        <div class="step-icon">🛒</div>
+        <h4>Pilih &amp; Masukkan Keranjang</h4>
+        <p>Pilih produk, tentukan varian &amp; jumlah, lalu klik "Masukkan Keranjang" atau "Beli Langsung".</p>
+      </div>
+      <div class="step-card">
+        <div class="step-num">3</div>
+        <div class="step-icon">💳</div>
+        <h4>Checkout &amp; Bayar</h4>
+        <p>Isi alamat pengiriman, pilih ekspedisi, dan bayar via metode yang tersedia di Shopee.</p>
+      </div>
+      <div class="step-card">
+        <div class="step-num">4</div>
+        <div class="step-icon">📦</div>
+        <h4>Pantau Pengiriman</h4>
+        <p>Lacak status pesanan langsung di aplikasi Shopee. Pesanan sampai, klik "Pesanan Diterima".</p>
+      </div>
+    </div>
+
+    <!-- CTA di bawah steps -->
+    <div style="text-align:center;margin-top:2rem" id="cta-wa">
+      <button onclick="bukaWA()" class="btn-primary">📱 Chat WhatsApp Sekarang</button>
+    </div>
+    <div style="text-align:center;margin-top:2rem;display:none" id="cta-shopee">
+      <button onclick="bukaShopee()" class="btn-shopee">🛍️ Kunjungi Toko Shopee</button>
+    </div>
+
+  </div>
+</div>
+
+<!-- STATS -->
+<div class="stats-bg">
+  <div class="section">
+    <div class="stats">
+      <div class="stat-card">
+        <div class="stat-num">1000+</div>
+        <div class="stat-label">Pelanggan Puas</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-num">19+</div>
+        <div class="stat-label">Tahun Pengalaman</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-num">34</div>
+        <div class="stat-label">Provinsi Terjangkau</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-num">4.9★</div>
+        <div class="stat-label">Rating Rata-rata</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- TESTIMONIALS -->
+<div class="section-wrap" id="testimoni">
+  <div class="section">
+    <p class="section-title">Kata Pelanggan Setia</p>
+    <p class="section-sub">Lebih dari 1.300+ pembeli puas di seluruh Indonesia — ini cerita mereka</p>
+    <div class="testimonials">
+      <div class="testi-card">
+        <div class="testi-stars">★★★★★</div>
+        <p class="testi-text">"Paket pesanan kami terima dalam kondisi baik dan lengkap jumlahnya. Langsung di masak menjadi bihun goreng favorit keluarga. Rasanya mantab, enak dan semua suka. Puas Banget dengan mie soun ini"</p>
+        <div class="testi-author">
+          <div class="avatar" style="background:#FFD54F;color:#E65100">VI</div>
+          <div>
+            <div class="testi-name">viwb1hpv79</div>
+            <div class="testi-loc">📍 Yogyakarta — Ibu Rumah Tangga</div>
+          </div>
+        </div>
+      </div>
+      <div class="testi-card">
+        <div class="testi-stars">★★★★★</div>
+        <p class="testi-text">"Saya reseller soun ini, margin bagus dan pelanggan saya selalu repeat order. Packaging juga rapi dan tahan di perjalanan jauh."</p>
+       <br>
+       <br>
+        <div class="testi-author">
+          <div class="avatar" style="background:#80DEEA;color:#006064">BS</div>
+          <div>
+            <div class="testi-name">Budi Santoso</div>
+            <div class="testi-loc">📍 Solo — Reseller</div>
+          </div>
+        </div>
+      </div>
+      <div class="testi-card">
+        <div class="testi-stars">★★★★★</div>
+        <p class="testi-text">"soun kenyal cocok digunakan sebagai campuran sayur sop dan sayur oyong karena rasanya yang nikmat dan kenyal."</p>
+        <br>
+        <div class="testi-author">
+          <div class="avatar" style="background:#EF9A9A;color:#B71C1C">JA</div>
+          <div>
+            <div class="testi-name">jratna386</div>
+            <div class="testi-loc">📍 Jakarta — Karyawan Swasta</div>
+          </div>
+        </div>
+      </div>
+      <div class="testi-card">
+        <div class="testi-stars">★★★★★</div>
+        <p class="testi-text">"Barangnya sudah sampai dengan selamat overall bagus banget barangnya. Thank you seller mantapp jiwa❤️syuka banget barangnya lengkap🥰"</p>
+        <div class="testi-author">
+          <div class="avatar" style="background:#CE93D8;color:#4A148C">ZR</div>
+          <div>
+            <div class="testi-name">zakariadyana</div>
+            <div class="testi-loc">📍 Semarang — Ibu Rumah Tangga</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- CTA FINAL -->
+<div class="cta-section" id="kontak">
+  <h2>🎉 Pesan Sekarang, Gratis Ongkir!</h2>
+  <p>
+    Promo terbatas untuk pembelian pertama minimum Rp 50.000.<br>
+    Stok terbatas — jangan sampai kehabisan ya!<br>
+    <strong style="color:#FFD166">Respon cepat, amanah, dan terpercaya.</strong>
+  </p>
+  <button class="btn-white" onclick="bukaWA()">📱 Pesan via WhatsApp Sekarang</button>
+  <button class="btn-shopee-cta" onclick="bukaShopee()" style="margin-top:1rem">🛍️ Kunjungi Toko Shopee Kami</button>
+</div>
+
+<!-- FOOTER -->
+<footer>
+  <strong>🍜 Mie Soun Khas Klaten</strong>
+  <div class="footer-links">
+    <a href="#">Beranda</a>
+    <a href="#produk">Produk</a>
+    <a href="#galeri">Galeri Foto</a>
+    <a href="#cara-beli">Cara Beli</a>
+    <a href="#testimoni">Testimoni</a>
+    <a href="#kontak">Kontak</a>
+  </div>
+  <p>📍 Klaten, Jawa Tengah, Indonesia </p>
+  <p style="margin-top:.5rem;font-size:.8rem;opacity:.6">© 2026 Mie Soun Klaten — Hak Cipta Dilindungi · Produk UMKM Lokal Bangga Buatan Indonesia</p>
+</footer>
+
+  <script src="script.js"></script>
+
+</body>
+</html>

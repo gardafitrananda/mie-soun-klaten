@@ -1,0 +1,467 @@
+/* ============================================================
+   RESET & VARIABEL
+   ============================================================ */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Inter', -apple-system, sans-serif;
+}
+
+:root {
+    --primary: #FF6B35;
+    --primary-dark: #E85A24;
+    --bg: #f4f1ed;
+    --card: #ffffff;
+    --border: #e2dcd5;
+    --text: #2d2d2d;
+    --text-muted: #8a7f78;
+    --shadow: 0 2px 12px rgba(0, 0, 0, 0.06);
+    --radius: 12px;
+}
+
+body {
+    background: var(--bg);
+    display: flex;
+    min-height: 100vh;
+}
+
+/* ============================================================
+   SIDEBAR
+   ============================================================ */
+.sidebar {
+    width: 220px;
+    background: #1e1a1a;
+    color: #fff;
+    padding: 20px 0;
+    position: fixed;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+}
+
+.sidebar .logo {
+    padding: 0 20px 20px;
+    border-bottom: 1px solid #333;
+    font-size: 18px;
+    font-weight: 700;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.sidebar .logo i {
+    color: var(--primary);
+}
+
+.sidebar nav {
+    flex: 1;
+    padding: 16px 0;
+}
+
+.sidebar nav a {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 10px 20px;
+    color: #aaa;
+    text-decoration: none;
+    transition: .2s;
+    border-left: 3px solid transparent;
+}
+
+.sidebar nav a:hover,
+.sidebar nav a.active {
+    background: #2a2626;
+    color: #fff;
+    border-left-color: var(--primary);
+}
+
+.sidebar nav a i {
+    width: 20px;
+    text-align: center;
+}
+
+.sidebar .user {
+    padding: 16px 20px;
+    border-top: 1px solid #333;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    font-size: 14px;
+}
+
+.sidebar .user .avatar {
+    width: 36px;
+    height: 36px;
+    background: var(--primary);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 700;
+    color: #fff;
+    flex-shrink: 0;
+}
+
+.sidebar .user .info {
+    flex: 1;
+}
+
+.sidebar .user .info .name {
+    font-weight: 600;
+    color: #fff;
+}
+
+.sidebar .user .info .role {
+    font-size: 12px;
+    color: #888;
+}
+
+.sidebar .user .logout {
+    color: #888;
+    transition: .2s;
+}
+
+.sidebar .user .logout:hover {
+    color: #ef4444;
+}
+
+/* ============================================================
+   MAIN CONTENT
+   ============================================================ */
+.main {
+    margin-left: 220px;
+    flex: 1;
+    padding: 28px 32px;
+}
+
+/* ============================================================
+   HEADER
+   ============================================================ */
+.header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 28px;
+}
+
+.header h1 {
+    font-size: 24px;
+    font-weight: 700;
+}
+
+.header .actions {
+    display: flex;
+    gap: 12px;
+    align-items: center;
+}
+
+.header .actions input {
+    padding: 8px 14px;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    background: var(--card);
+    font-size: 14px;
+    width: 200px;
+}
+
+/* ============================================================
+   BUTTONS
+   ============================================================ */
+.btn {
+    padding: 8px 18px;
+    border: none;
+    border-radius: 8px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: .2s;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 14px;
+}
+
+.btn-primary {
+    background: var(--primary);
+    color: #fff;
+}
+
+.btn-primary:hover {
+    background: var(--primary-dark);
+}
+
+.btn-success {
+    background: #10b981;
+    color: #fff;
+}
+
+.btn-success:hover {
+    background: #059669;
+}
+
+.btn-danger {
+    background: #ef4444;
+    color: #fff;
+}
+
+.btn-danger:hover {
+    background: #dc2626;
+}
+
+.btn-outline {
+    background: transparent;
+    border: 1px solid var(--border);
+    color: var(--text);
+}
+
+.btn-outline:hover {
+    background: #eee;
+}
+
+/* ============================================================
+   CARD & TABLE
+   ============================================================ */
+.card {
+    background: var(--card);
+    border-radius: var(--radius);
+    box-shadow: var(--shadow);
+    border: 1px solid var(--border);
+    overflow: hidden;
+}
+
+.card table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 14px;
+}
+
+.card th {
+    background: #f8f5f2;
+    text-align: left;
+    padding: 12px 16px;
+    font-weight: 600;
+    color: var(--text-muted);
+    border-bottom: 1px solid var(--border);
+}
+
+.card td {
+    padding: 12px 16px;
+    border-bottom: 1px solid var(--border);
+    vertical-align: middle;
+}
+
+.card tr:last-child td {
+    border-bottom: none;
+}
+
+/* ============================================================
+   STATUS BADGE
+   ============================================================ */
+.card .status {
+    display: inline-block;
+    padding: 2px 12px;
+    border-radius: 20px;
+    font-size: 12px;
+    font-weight: 600;
+}
+
+.status.published {
+    background: #d1fae5;
+    color: #065f46;
+}
+
+.status.draft {
+    background: #fef3c7;
+    color: #92400e;
+}
+
+.status.archived {
+    background: #f1f5f9;
+    color: #475569;
+}
+
+/* ============================================================
+   ACTIONS
+   ============================================================ */
+.card .actions i {
+    cursor: pointer;
+    margin: 0 4px;
+    color: #888;
+    transition: .2s;
+}
+
+.card .actions i:hover {
+    color: var(--primary);
+}
+
+.card .actions .fa-trash:hover {
+    color: #ef4444;
+}
+
+/* ============================================================
+   MODAL
+   ============================================================ */
+.modal-overlay {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.4);
+    backdrop-filter: blur(4px);
+    align-items: center;
+    justify-content: center;
+    z-index: 999;
+}
+
+.modal-overlay.open {
+    display: flex;
+}
+
+.modal-box {
+    background: #fff;
+    border-radius: var(--radius);
+    max-width: 500px;
+    width: 100%;
+    padding: 28px 32px;
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.2);
+    animation: modalIn .25s ease;
+}
+
+@keyframes modalIn {
+    from {
+        transform: scale(0.95);
+        opacity: 0;
+    }
+    to {
+        transform: scale(1);
+        opacity: 1;
+    }
+}
+
+.modal-box .modal-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 16px;
+}
+
+.modal-box .modal-header h3 {
+    font-size: 20px;
+}
+
+.modal-box .modal-header .close {
+    font-size: 24px;
+    cursor: pointer;
+    color: #888;
+}
+
+.modal-box .modal-header .close:hover {
+    color: #000;
+}
+
+.modal-box .form-group {
+    margin-bottom: 14px;
+}
+
+.modal-box .form-group label {
+    display: block;
+    font-weight: 600;
+    font-size: 14px;
+    margin-bottom: 4px;
+}
+
+.modal-box .form-group input,
+.modal-box .form-group textarea,
+.modal-box .form-group select {
+    width: 100%;
+    padding: 8px 12px;
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    font-size: 14px;
+    background: #faf8f6;
+}
+
+.modal-box .form-group textarea {
+    min-height: 80px;
+    resize: vertical;
+}
+
+.modal-box .form-actions {
+    display: flex;
+    gap: 10px;
+    justify-content: flex-end;
+    margin-top: 16px;
+}
+
+/* ============================================================
+   MOBILE RESPONSIVE
+   ============================================================ */
+@media (max-width: 768px) {
+    .sidebar {
+        transform: translateX(-100%);
+        position: fixed;
+        z-index: 100;
+        transition: .3s;
+    }
+
+    .sidebar.open {
+        transform: translateX(0);
+    }
+
+    .main {
+        margin-left: 0;
+        padding: 16px;
+    }
+
+    .header {
+        flex-wrap: wrap;
+        gap: 12px;
+    }
+
+    .header .actions input {
+        width: 100%;
+    }
+
+    .card table {
+        font-size: 12px;
+    }
+
+    .card th,
+    .card td {
+        padding: 8px 10px;
+    }
+
+    .modal-box {
+        margin: 16px;
+        padding: 20px;
+    }
+}
+
+/* ============================================================
+   MOBILE TOGGLE & OVERLAY
+   ============================================================ */
+.menu-toggle {
+    display: none;
+    background: none;
+    border: none;
+    font-size: 24px;
+    cursor: pointer;
+}
+
+@media (max-width: 768px) {
+    .menu-toggle {
+        display: block;
+    }
+}
+
+.overlay {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.3);
+    z-index: 99;
+}
+
+.overlay.open {
+    display: block;
+}
