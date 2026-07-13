@@ -115,6 +115,42 @@ async function loadProductsFromDB() {
         container.innerHTML += cardHTML;
       });
     }
+    async function loadTestimonialsFromDB() {
+  try {
+    const response = await fetch('/api/testimonials');
+    const json = await response.json();
+    
+    if (json.success && json.data.length > 0) {
+      const container = document.querySelector('.testimonials');
+      container.innerHTML = ''; // Hapus testimoni statis bawaan HTML
+      
+      json.data.forEach(t => {
+        const stars = '★'.repeat(t.rating);
+        
+        container.innerHTML += `
+          <div class="testi-card" style="opacity:1; transform:translateY(0)">
+            <div class="testi-stars">${stars}</div>
+            <p class="testi-text">"${t.text}"</p>
+            <div class="testi-author">
+              <div class="avatar" style="background:${t.avatar_bg}; color:${t.avatar_color}">${t.avatar_initials}</div>
+              <div>
+                <div class="testi-name">${t.name}</div>
+                <div class="testi-loc">${t.location}</div>
+              </div>
+            </div>
+          </div>
+        `;
+      });
+    }
+  } catch (error) {
+    console.error("Gagal mengambil data testimoni database:", error);
+  }
+}
+
+// Tambahkan pemanggilan saat halaman dimuat
+document.addEventListener('DOMContentLoaded', () => {
+    loadTestimonialsFromDB();
+});
   } catch (error) {
     console.error("Gagal mengambil data dari database:", error);
     // Jika gagal (misal server down), website tetap akan menampilkan produk statis bawaan HTML

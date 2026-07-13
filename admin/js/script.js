@@ -178,9 +178,11 @@ function openModal(tab, data = null) {
         `;
     } else if (tab === 'testimonials') {
         html = `
-            <div class="form-group"><label>Nama</label><input id="f_name" value="${data?.name || ''}" /></div>
-            <div class="form-group"><label>Testimoni</label><textarea id="f_text">${data?.text || ''}</textarea></div>
-            <div class="form-group"><label>Rating (1-5)</label><input id="f_rating" type="number" min="1" max="5" value="${data?.rating || 5}" /></div>
+            <div class="form-group"><label>Nama Pengguna</label><input id="f_testi_name" value="${data?.name || ''}" /></div>
+            <div class="form-group"><label>Lokasi / Profesi (Contoh: 📍 Solo — Reseller)</label><input id="f_testi_loc" value="${data?.location || ''}" /></div>
+            <div class="form-group"><label>Isi Testimoni</label><textarea id="f_testi_text" rows="4">${data?.text || ''}</textarea></div>
+            <div class="form-group"><label>Rating Bintang (1-5)</label><input id="f_testi_rating" type="number" min="1" max="5" value="${data?.rating || 5}" /></div>
+            <div class="form-group"><label>Inisial Avatar (Maks 2 Huruf)</label><input id="f_testi_init" value="${data?.avatar_initials || ''}" placeholder="Contoh: BS" /></div>
         `;
     } else if (tab === 'users') {
         html = `
@@ -233,10 +235,55 @@ function openModal(tab, data = null) {
             } catch (err) {
                 console.error("Error:", err);
             }
-        } else {
-            // Biarkan logika mock data untuk artikel, user, dll tetap di sini jika belum ada databasenya
-            closeModal();
+        } else if (tab === 'testimonials') {
+            const nameInput = document.getElementById('f_testi_name').value;
+            const payload = {
+                name: nameInput,
+                location: document.getElementById('f_testi_loc').value,
+                text: document.getElementById('f_testi_text').value,
+                rating: parseInt(document.getElementById('f_testi_rating').value) || 5,
+                avatar_initials: document.getElementById('f_testi_init').value || nameInput.substring(0, 2).toUpperCase(),
+                avatar_bg: data?.avatar_bg || '#CE93D8', // mempertahankan warna lama atau default
+                avatar_color: data?.avatar_color || '#4A148C'
+            };
+
+            try {
+                let url = '/api/testimonials';
+                let method = 'POST';
+
+                if (isEdit) {
+                    method = 'PUT';
+                    payload.id = data.id;
+                }
+
+                const response = await fetch(url, {
+                    method: method,
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(payload)
+                });
+
+                if (response.ok) {
+                    alert('Testimoni berhasil disimpan ke database!');
+                    location.reload();
+                } else {
+                    alert('Gagal menyimpan testimoni.');
+                }
+            } catch (err) {
+                console.error(err);
+            }
+        } else if (tab === 'testimonials') {
+        try {
+            const response = await fetch(`/api/testimonials?id=${id}`, { method: 'DELETE' });
+            if (response.ok) {
+                alert('Testimoni berhasil dihapus!');
+                location.reload();
+            } else {
+                alert('Gagal menghapus testimoni.');
+            }
+        } catch (err) {
+            console.error(err);
         }
+    }
     };
 
 }
@@ -352,3 +399,25 @@ async function fetchProductsToAdmin() {
 }
 // Jalankan sesaat setelah script dimuat
 fetchProductsToAdmin();
+async function fetchAllDataToAdmin() {
+    try {
+        // Ambil Produk
+        const resProd = await fetch('/api/products');
+        const jsonProd = await resProd.json();
+        if (jsonProd.success) {
+            products = jsonProd.data;
+            renderProducts();
+        }
+        
+        // Ambil Testimoni
+        const resTesti = await fetch('/api/testimonials');
+        const jsonTesti = await resTesti.json();
+        if (jsonTesti.success) {
+            testimonials = jsonTesti.data;
+            renderTestimonials();
+        }
+    } catch (err) {
+        console.error("Gagal sinkronisasi data ke dashboard:", err);
+    }
+}
+fetchAllDataToAdmin();
