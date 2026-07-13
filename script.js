@@ -152,8 +152,35 @@ async function loadTestimonialsFromDB() {
   }
 }
 
-// 3. Jalankan kedua fungsi SETELAH seluruh halaman (DOM) selesai dimuat
+// 3. Fungsi Mengambil Galeri
+async function loadGalleryFromDB() {
+  try {
+    const response = await fetch('/api/gallery');
+    const json = await response.json();
+    
+    if (json.success && json.data.length > 0) {
+      const container = document.querySelector('.gallery-grid');
+      container.innerHTML = ''; 
+      
+      json.data.forEach(g => {
+        container.innerHTML += `
+          <div class="gallery-item ${g.css_class || ''}" onclick="openLightbox(this)">
+            <img src="${g.image_url}" alt="${g.alt_text}" loading="lazy">
+            <div class="overlay">
+              <span class="overlay-label">${g.label}</span>
+            </div>
+          </div>
+        `;
+      });
+    }
+  } catch (error) {
+    console.error("Gagal mengambil data galeri database:", error);
+  }
+}
+
+// 4. Jalankan Ketiga fungsi SETELAH seluruh halaman (DOM) selesai dimuat
 document.addEventListener('DOMContentLoaded', () => {
     loadProductsFromDB();
     loadTestimonialsFromDB();
+    loadGalleryFromDB(); 
 });
