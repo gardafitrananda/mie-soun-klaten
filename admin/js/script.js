@@ -1,4 +1,15 @@
 // ============================================================
+// CEK AUTENTIKASI LOGIN
+// ============================================================
+if (localStorage.getItem('admin_token') !== 'miesecret2026') {
+    window.location.href = '/admin/login.html';
+}
+
+function logoutAdmin() {
+    localStorage.removeItem('admin_token');
+    window.location.href = '/admin/login.html';
+}
+// ============================================================
 // DATA STATE (Data Awal Kosong, Akan Diisi dari Database)
 // ============================================================
 let products = [];
@@ -120,15 +131,28 @@ function openModal(tab, data = null) {
     title.textContent = isEdit ? 'Edit Data' : 'Tambah Data Baru';
     let html = '';
 
-    if (tab === 'products') {
+   if (tab === 'products') {
         html = `
             <div class="form-group"><label>Badge (Misal: 🔥 Terlaris)</label><input id="f_badge" value="${data?.badge || ''}" placeholder="Kosongkan jika tidak ada" /></div>
             <div class="form-group"><label>Nama Produk</label><input id="f_name" value="${data?.name || ''}" /></div>
             <div class="form-group"><label>Harga Jual Baru (Angka)</label><input id="f_price" type="number" value="${data?.price || ''}" /></div>
             <div class="form-group"><label>Harga Coret / Lama (Angka)</label><input id="f_old_price" type="number" value="${data?.old_price || ''}" placeholder="Kosongkan jika tidak diskon" /></div>
             <div class="form-group"><label>Deskripsi</label><textarea id="f_desc" rows="3">${data?.description || ''}</textarea></div>
-            <div class="form-group"><label>URL Gambar (Contoh: FOTO PRODUK/foto.jpg)</label><input id="f_img" value="${data?.gambar_url || 'FOTO PRODUK/foto.jpg'}" /></div>
+            
+            <!-- Fitur Upload Gambar -->
+            <div class="form-group" style="background: #f9f9f9; padding: 1rem; border-radius: 8px; border: 1px dashed #ccc;">
+                <label>Pilih / Ganti Foto Produk</label>
+                <input type="file" id="f_upload" accept="image/*" onchange="previewImage(this)" style="margin-bottom:10px;" />
+                
+                <!-- Input ini disembunyikan, isinya akan otomatis terisi Base64 / URL gambar -->
+                <input type="hidden" id="f_img" value="${data?.gambar_url || 'FOTO PRODUK/foto.jpg'}" />
+                
+                <div>
+                    <img id="img_preview" src="${data?.gambar_url || 'FOTO PRODUK/foto.jpg'}" alt="Preview" style="max-width: 100%; height: auto; border-radius: 8px; max-height: 150px; object-fit: cover;">
+                </div>
+            </div>
         `;
+    
     } else if (tab === 'testimonials') {
         html = `
             <div class="form-group"><label>Nama Pengguna</label><input id="f_testi_name" value="${data?.name || ''}" /></div>
@@ -265,3 +289,81 @@ document.addEventListener('keydown', e => { if (e.key === 'Escape') closeModal()
 window.deleteItem = deleteItem;
 window.editItem = editItem;
 window.closeModal = closeModal;
+
+// ============================================================
+// FUNGSI PREVIEW & CONVERT GAMBAR KE BASE64
+// ============================================================
+function previewImage(input) {
+    const file = input.files[0];
+    if (file) {
+        // Cek ukuran file (Maks 1MB agar database tidak kepenuhan)
+        if (file.size > 1024 * 1024) {
+            alert('Ukuran gambar terlalu besar! Maksimal 1MB.');
+            input.value = '';
+            return;
+        }
+
+        const reader = new FileReader();
+        reader.onload = function(e) {
+            // Tampilkan gambar di layar
+            document.getElementById('img_preview').src = e.target.result;
+            // Masukkan data gambar ke input hidden untuk dikirim ke database
+            document.getElementById('f_img').value = e.target.result;
+        }
+        reader.readAsDataURL(file);
+    }
+}
+// ============================================================
+// FUNGSI PREVIEW & AUTO-COMPRESS GAMBAR (CANVAS API)
+// ============================================================
+function previewImage(input) {
+    const file = input.files[0];
+    if (!file) return;
+
+    // Pastikan yang diupload benar-benar gambar
+    if (!file.type.match(/image.*/)) {
+        alert("File yang dipilih bukan gambar!");
+        input.value = '';
+        return;
+    }
+
+    const reader = new FileReader();
+    reader.onload = function(e) {
+        const img = new Image();
+        img.onload = function() {
+            // Tentukan batas maksimal lebar gambar (misal 800px sudah sangat cukup untuk web)
+            const MAX_WIDTH = 800;
+            let width = img.width;
+            let height = img.height;
+
+            // Hitung rasio baru jika gambar aslinya lebih besar dari MAX_WIDTH
+            if (width > MAX_WIDTH) {
+                height = Math.round((height * MAX_WIDTH) / width);
+                width = MAX_WIDTH;
+            }
+
+            // Buat elemen Canvas di memori (tidak terlihat di layar)
+            const canvas = document.createElement('canvas');
+            canvas.width = width;
+            canvas.height = height;
+            
+            // Gambar ulang foto asli ke dalam canvas dengan ukuran yang sudah dikecilkan
+            const ctx = canvas.getContext('2d');
+            ctx.drawImage(img, 0, 0, width, height);
+
+            // Kompres gambar menjadi format JPEG dengan kualitas 70% (0.7)
+            const compressedBase64 = canvas.toDataURL('image/jpeg', 0.7);
+
+            // Tampilkan preview gambar yang sudah dikompres
+            document.getElementById('img_preview').src = compressedBase64;
+            
+            // Masukkan data gambar hasil kompresi ke input hidden untuk dikirim ke API
+            document.getElementById('f_img').value = compressedBase64;
+        };
+        // Masukkan hasil bacaan file ke dalam objek Image
+        img.src = e.target.result;
+    }
+    
+    // Baca file asli yang diunggah
+    reader.readAsDataURL(file);
+}
