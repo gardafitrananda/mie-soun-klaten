@@ -1,6 +1,6 @@
-import { sql } from '@vercel/postgres';
+const { sql } = require('@vercel/postgres');
 
-export default async function handler(req, res) {
+module.exports = async function handler(req, res) {
     res.setHeader('Access-Control-Allow-Origin', '*');
     res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS');
     res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
@@ -8,13 +8,11 @@ export default async function handler(req, res) {
     if (req.method === 'OPTIONS') return res.status(200).end();
 
     try {
-        // 1. GET ALL TESTIMONIALS
         if (req.method === 'GET') {
             const result = await sql`SELECT * FROM testimonials ORDER BY id ASC`;
             return res.status(200).json({ success: true, data: result.rows });
         }
 
-        // 2. POST NEW TESTIMONIAL
         if (req.method === 'POST') {
             const { name, location, text, rating, avatar_initials, avatar_bg, avatar_color } = req.body;
             const result = await sql`
@@ -25,7 +23,6 @@ export default async function handler(req, res) {
             return res.status(201).json({ success: true, data: result.rows[0] });
         }
 
-        // 3. PUT (EDIT) TESTIMONIAL
         if (req.method === 'PUT') {
             const { id, name, location, text, rating, avatar_initials, avatar_bg, avatar_color } = req.body;
             await sql`
@@ -37,7 +34,6 @@ export default async function handler(req, res) {
             return res.status(200).json({ success: true, message: 'Testimoni berhasil diupdate' });
         }
 
-        // 4. DELETE TESTIMONIAL
         if (req.method === 'DELETE') {
             const { id } = req.query;
             if (!id) return res.status(400).json({ success: false, error: 'ID required' });
@@ -50,4 +46,4 @@ export default async function handler(req, res) {
         console.error('Testimonials API error:', error);
         return res.status(500).json({ success: false, error: error.message });
     }
-}
+};
