@@ -9,23 +9,23 @@ module.exports = async function handler(req, res) {
 
     try {
         if (req.method === 'POST' || req.method === 'PUT') {
-            const { id, name, price, old_price, description, gambar_url, badge } = req.body;
+            // Tambahan shopee_link di sini
+            const { id, name, price, old_price, description, gambar_url, badge, shopee_link } = req.body;
             
-            // Konversi ke angka, jika kosong atau tidak valid, kirim null
             const numericPrice = (price === "" || isNaN(parseInt(price))) ? null : parseInt(price);
             const numericOldPrice = (old_price === "" || isNaN(parseInt(old_price))) ? null : parseInt(old_price);
 
             if (req.method === 'POST') {
                 const result = await sql`
-                    INSERT INTO products (name, price, old_price, description, gambar_url, badge) 
-                    VALUES (${name}, ${numericPrice}, ${numericOldPrice}, ${description || ''}, ${gambar_url || 'FOTO PRODUK/foto.jpg'}, ${badge || ''})
+                    INSERT INTO products (name, price, old_price, description, gambar_url, badge, shopee_link) 
+                    VALUES (${name}, ${numericPrice}, ${numericOldPrice}, ${description || ''}, ${gambar_url || 'FOTO PRODUK/foto.jpg'}, ${badge || ''}, ${shopee_link || ''})
                     RETURNING *
                 `;
                 return res.status(201).json({ success: true, data: result.rows[0] });
             } else {
                 await sql`
                     UPDATE products 
-                    SET name = ${name}, price = ${numericPrice}, old_price = ${numericOldPrice}, description = ${description}, gambar_url = ${gambar_url}, badge = ${badge}
+                    SET name = ${name}, price = ${numericPrice}, old_price = ${numericOldPrice}, description = ${description}, gambar_url = ${gambar_url}, badge = ${badge}, shopee_link = ${shopee_link}
                     WHERE id = ${id}
                 `;
                 return res.status(200).json({ success: true, message: 'Produk berhasil diupdate' });
@@ -36,17 +36,13 @@ module.exports = async function handler(req, res) {
             const result = await sql`SELECT * FROM products ORDER BY id ASC`;
             return res.status(200).json({ success: true, data: result.rows });
         }
-
+        
         if (req.method === 'DELETE') {
             const { id } = req.query;
-            if (!id) return res.status(400).json({ success: false, error: 'ID required' });
             await sql`DELETE FROM products WHERE id = ${id}`;
-            return res.status(200).json({ success: true, message: 'Product deleted' });
+            return res.status(200).json({ success: true });
         }
-
-        return res.status(405).json({ success: false, error: 'Method not allowed' });
     } catch (error) {
-        console.error('API error:', error);
         return res.status(500).json({ success: false, error: error.message });
     }
 };

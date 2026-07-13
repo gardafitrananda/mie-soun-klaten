@@ -89,6 +89,8 @@ async function loadProductsFromDB() {
         const hargaCoretHTML = prod.old_price > 0 ? `<span class="prod-price-old">${formatRupiah(prod.old_price)}</span>` : '';
         const badgeHTML = prod.badge ? `<div class="prod-badge">${prod.badge}</div>` : '';
         
+        const linkProdukIni = prod.shopee_link ? prod.shopee_link : LINK_SHOPEE;
+
         const cardHTML = `
           <div class="prod-card" style="opacity:1; transform:translateY(0)">
             ${badgeHTML}
@@ -104,7 +106,7 @@ async function loadProductsFromDB() {
                   ${hargaCoretHTML}
                 </div>
                 <div style="display:flex;gap:.4rem">
-                  <button class="btn-buy" onclick="bukaShopee()">🛍️ Shopee</button>
+                  <button class="btn-buy" onclick="window.open('${linkProdukIni}', '_blank')">🛍️ Shopee</button>
                   <button class="btn-buy btn-buy-wa" onclick="bukaWA()">💬 WA</button>
                 </div>
               </div>

@@ -103,6 +103,7 @@ function openModal(tab, data = null) {
             <div class="form-group"><label>Harga Jual Baru</label><input id="f_price" type="number" value="${data?.price || ''}" /></div>
             <div class="form-group"><label>Harga Coret</label><input id="f_old_price" type="number" value="${data?.old_price || ''}" /></div>
             <div class="form-group"><label>Deskripsi</label><textarea id="f_desc" rows="3">${data?.description || ''}</textarea></div>
+            <div class="form-group"><label>Link Shopee Spesifik (Opsional)</label><input id="f_shopee" value="${data?.shopee_link || ''}" placeholder="Kosongkan untuk pakai link toko utama" /></div>
             <div class="form-group" style="background:#f9f9f9; padding:1rem; border-radius:8px; border:1px dashed #ccc;">
                 <label>Foto Produk (Max 1MB Otomatis Kompres)</label>
                 <input type="file" accept="image/*" onchange="previewImage(this)" style="margin-bottom:10px;" />
@@ -145,7 +146,8 @@ function openModal(tab, data = null) {
             payload = {
                 badge: document.getElementById('f_badge').value, name: document.getElementById('f_name').value,
                 price: document.getElementById('f_price').value, old_price: document.getElementById('f_old_price').value,
-                description: document.getElementById('f_desc').value, gambar_url: document.getElementById('f_img').value
+                description: document.getElementById('f_desc').value, gambar_url: document.getElementById('f_img').value,
+                shopee_link: document.getElementById('f_shopee').value
             };
         } else if (tab === 'testimonials') {
             payload = {
