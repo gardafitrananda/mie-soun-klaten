@@ -71,16 +71,15 @@
 // ============================================================
 // INTEGRASI DATABASE (Fetch dari API Vercel)
 // ============================================================
+
+// 1. Fungsi Mengambil Produk
 async function loadProductsFromDB() {
   try {
     const response = await fetch('/api/products');
     const json = await response.json();
     
-    // Pastikan API berhasil dan ada datanya
     if (json.success && json.data.length > 0) {
       const container = document.querySelector('.products');
-      
-      // Kosongkan elemen produk statis bawaan dari HTML
       container.innerHTML = ''; 
       
       json.data.forEach(prod => {
@@ -115,27 +114,33 @@ async function loadProductsFromDB() {
         container.innerHTML += cardHTML;
       });
     }
-    async function loadTestimonialsFromDB() {
+  } catch (error) {
+    console.error("Gagal mengambil data produk dari database:", error);
+  }
+}
+
+// 2. Fungsi Mengambil Testimoni
+async function loadTestimonialsFromDB() {
   try {
     const response = await fetch('/api/testimonials');
     const json = await response.json();
     
     if (json.success && json.data.length > 0) {
       const container = document.querySelector('.testimonials');
-      container.innerHTML = ''; // Hapus testimoni statis bawaan HTML
+      container.innerHTML = ''; 
       
       json.data.forEach(t => {
-        const stars = '★'.repeat(t.rating);
+        const stars = '★'.repeat(t.rating || 5);
         
         container.innerHTML += `
           <div class="testi-card" style="opacity:1; transform:translateY(0)">
-            <div class="testi-stars">${stars}</div>
+            <div class="testi-stars" style="color:#FFD166; font-size:1.2rem; margin-bottom:0.5rem;">${stars}</div>
             <p class="testi-text">"${t.text}"</p>
             <div class="testi-author">
-              <div class="avatar" style="background:${t.avatar_bg}; color:${t.avatar_color}">${t.avatar_initials}</div>
+              <div class="avatar" style="background:${t.avatar_bg || '#FFD54F'}; color:${t.avatar_color || '#E65100'}">${t.avatar_initials || 'U'}</div>
               <div>
                 <div class="testi-name">${t.name}</div>
-                <div class="testi-loc">${t.location}</div>
+                <div class="testi-loc">${t.location || '📍 Pelanggan Setia'}</div>
               </div>
             </div>
           </div>
@@ -147,15 +152,8 @@ async function loadProductsFromDB() {
   }
 }
 
-// Tambahkan pemanggilan saat halaman dimuat
+// 3. Jalankan kedua fungsi SETELAH seluruh halaman (DOM) selesai dimuat
 document.addEventListener('DOMContentLoaded', () => {
+    loadProductsFromDB();
     loadTestimonialsFromDB();
 });
-  } catch (error) {
-    console.error("Gagal mengambil data dari database:", error);
-    // Jika gagal (misal server down), website tetap akan menampilkan produk statis bawaan HTML
-  }
-}
-
-// Jalankan fungsi saat halaman selesai dimuat sepenuhnya
-document.addEventListener('DOMContentLoaded', loadProductsFromDB);
