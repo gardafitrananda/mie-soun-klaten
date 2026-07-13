@@ -84,25 +84,25 @@ async function loadProductsFromDB() {
       container.innerHTML = ''; 
       
       json.data.forEach(prod => {
-        // Format harga ke dalam bentuk Rupiah
-        const hargaRupiah = new Intl.NumberFormat('id-ID', { 
-          style: 'currency', 
-          currency: 'IDR', 
-          maximumFractionDigits: 0 
-        }).format(prod.harga);
+        const formatRupiah = (angka) => new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'IDR', maximumFractionDigits: 0 }).format(angka);
+        const hargaRupiah = formatRupiah(prod.price);
         
-        // Buat struktur HTML (Card) untuk setiap produk dari database
+        const hargaCoretHTML = prod.old_price > 0 ? `<span class="prod-price-old">${formatRupiah(prod.old_price)}</span>` : '';
+        const badgeHTML = prod.badge ? `<div class="prod-badge">${prod.badge}</div>` : '';
+        
         const cardHTML = `
           <div class="prod-card" style="opacity:1; transform:translateY(0)">
+            ${badgeHTML}
             <div class="prod-img-wrap">
-              <img src="${prod.gambar_url}" alt="${prod.nama_menu}" loading="lazy" onerror="this.style.opacity='0'">
+              <img src="${prod.gambar_url}" alt="${prod.name}" loading="lazy" onerror="this.style.opacity='0'">
             </div>
             <div class="prod-info">
-              <h3>${prod.nama_menu}</h3>
-              <p>${prod.deskripsi}</p>
+              <h3>${prod.name}</h3>
+              <p>${prod.description}</p>
               <div class="prod-footer">
                 <div>
                   <span class="prod-price">${hargaRupiah}</span>
+                  ${hargaCoretHTML}
                 </div>
                 <div style="display:flex;gap:.4rem">
                   <button class="btn-buy" onclick="bukaShopee()">🛍️ Shopee</button>
@@ -112,8 +112,6 @@ async function loadProductsFromDB() {
             </div>
           </div>
         `;
-        
-        // Masukkan card ke dalam container
         container.innerHTML += cardHTML;
       });
     }
