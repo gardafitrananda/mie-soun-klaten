@@ -106,8 +106,8 @@ async function loadProductsFromDB() {
                   ${hargaCoretHTML}
                 </div>
                 <div style="display:flex;gap:.4rem">
-                  <button class="btn-buy" onclick="window.open('${linkProdukIni}', '_blank')">🛍️ Shopee</button>
-                  <button class="btn-buy btn-buy-wa" onclick="bukaWA()">💬 WA</button>
+                  <button class="btn-buy" onclick="window.open('${linkProdukIni}', '_blank')"><i class="fas fa-bag-shopping"></i> Shopee</button>
+                  <button class="btn-buy btn-buy-wa" onclick="bukaWA()"><i class="fab fa-whatsapp"></i> WA</button>
                 </div>
               </div>
             </div>
@@ -142,7 +142,7 @@ async function loadTestimonialsFromDB() {
               <div class="avatar" style="background:${t.avatar_bg || '#FFD54F'}; color:${t.avatar_color || '#E65100'}">${t.avatar_initials || 'U'}</div>
               <div>
                 <div class="testi-name">${t.name}</div>
-                <div class="testi-loc">${t.location || '📍 Pelanggan Setia'}</div>
+                <div class="testi-loc"><i class="fas fa-map-marker-alt"></i> ${t.location || 'Pelanggan Setia'}</div>
               </div>
             </div>
           </div>
