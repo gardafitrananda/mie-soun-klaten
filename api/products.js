@@ -8,39 +8,33 @@ module.exports = async function handler(req, res) {
     if (req.method === 'OPTIONS') return res.status(200).end();
 
     try {
+        if (req.method === 'POST' || req.method === 'PUT') {
+            const { id, name, price, old_price, description, gambar_url, badge } = req.body;
+            
+            // Konversi ke angka, jika kosong atau tidak valid, kirim null
+            const numericPrice = (price === "" || isNaN(parseInt(price))) ? null : parseInt(price);
+            const numericOldPrice = (old_price === "" || isNaN(parseInt(old_price))) ? null : parseInt(old_price);
+
+            if (req.method === 'POST') {
+                const result = await sql`
+                    INSERT INTO products (name, price, old_price, description, gambar_url, badge) 
+                    VALUES (${name}, ${numericPrice}, ${numericOldPrice}, ${description || ''}, ${gambar_url || 'FOTO PRODUK/foto.jpg'}, ${badge || ''})
+                    RETURNING *
+                `;
+                return res.status(201).json({ success: true, data: result.rows[0] });
+            } else {
+                await sql`
+                    UPDATE products 
+                    SET name = ${name}, price = ${numericPrice}, old_price = ${numericOldPrice}, description = ${description}, gambar_url = ${gambar_url}, badge = ${badge}
+                    WHERE id = ${id}
+                `;
+                return res.status(200).json({ success: true, message: 'Produk berhasil diupdate' });
+            }
+        }
+        
         if (req.method === 'GET') {
             const result = await sql`SELECT * FROM products ORDER BY id ASC`;
             return res.status(200).json({ success: true, data: result.rows });
-        }
-
-        if (req.method === 'POST') {
-            const { name, price, old_price, description, gambar_url, badge } = req.body;
-            
-            // Ganti bagian parsing harga di kedua block (POST & PUT) dengan ini:
-            const numericPrice = (price === "" || isNaN(parseInt(price))) ? 0 : parseInt(price);
-            const numericOldPrice = (old_price === "" || isNaN(parseInt(old_price))) ? 0 : parseInt(old_price);
-
-            const result = await sql`
-                INSERT INTO products (name, price, old_price, description, gambar_url, badge) 
-                VALUES (${name}, ${numericPrice}, ${numericOldPrice}, ${description || ''}, ${gambar_url || 'FOTO PRODUK/foto.jpg'}, ${badge || ''})
-                RETURNING *
-            `;
-            return res.status(201).json({ success: true, data: result.rows[0] });
-        }
-
-        if (req.method === 'PUT') {
-            const { id, name, price, old_price, description, gambar_url, badge } = req.body;
-            
-            // Ganti bagian parsing harga di kedua block (POST & PUT) dengan ini:
-            const numericPrice = (price === "" || isNaN(parseInt(price))) ? 0 : parseInt(price);
-            const numericOldPrice = (old_price === "" || isNaN(parseInt(old_price))) ? 0 : parseInt(old_price);
-
-            await sql`
-                UPDATE products 
-                SET name = ${name}, price = ${numericPrice}, old_price = ${numericOldPrice}, description = ${description}, gambar_url = ${gambar_url}, badge = ${badge}
-                WHERE id = ${id}
-            `;
-            return res.status(200).json({ success: true, message: 'Produk berhasil diupdate' });
         }
 
         if (req.method === 'DELETE') {
