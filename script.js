@@ -68,3 +68,60 @@
       observer.observe(el);
     } catch(e) { /* skip elemen bermasalah */ }
   });
+// ============================================================
+// INTEGRASI DATABASE (Fetch dari API Vercel)
+// ============================================================
+async function loadProductsFromDB() {
+  try {
+    const response = await fetch('/api/products');
+    const json = await response.json();
+    
+    // Pastikan API berhasil dan ada datanya
+    if (json.success && json.data.length > 0) {
+      const container = document.querySelector('.products');
+      
+      // Kosongkan elemen produk statis bawaan dari HTML
+      container.innerHTML = ''; 
+      
+      json.data.forEach(prod => {
+        // Format harga ke dalam bentuk Rupiah
+        const hargaRupiah = new Intl.NumberFormat('id-ID', { 
+          style: 'currency', 
+          currency: 'IDR', 
+          maximumFractionDigits: 0 
+        }).format(prod.harga);
+        
+        // Buat struktur HTML (Card) untuk setiap produk dari database
+        const cardHTML = `
+          <div class="prod-card" style="opacity:1; transform:translateY(0)">
+            <div class="prod-img-wrap">
+              <img src="${prod.gambar_url}" alt="${prod.nama_menu}" loading="lazy" onerror="this.style.opacity='0'">
+            </div>
+            <div class="prod-info">
+              <h3>${prod.nama_menu}</h3>
+              <p>${prod.deskripsi}</p>
+              <div class="prod-footer">
+                <div>
+                  <span class="prod-price">${hargaRupiah}</span>
+                </div>
+                <div style="display:flex;gap:.4rem">
+                  <button class="btn-buy" onclick="bukaShopee()">🛍️ Shopee</button>
+                  <button class="btn-buy btn-buy-wa" onclick="bukaWA()">💬 WA</button>
+                </div>
+              </div>
+            </div>
+          </div>
+        `;
+        
+        // Masukkan card ke dalam container
+        container.innerHTML += cardHTML;
+      });
+    }
+  } catch (error) {
+    console.error("Gagal mengambil data dari database:", error);
+    // Jika gagal (misal server down), website tetap akan menampilkan produk statis bawaan HTML
+  }
+}
+
+// Jalankan fungsi saat halaman selesai dimuat sepenuhnya
+document.addEventListener('DOMContentLoaded', loadProductsFromDB);

@@ -156,12 +156,14 @@ function openModal(tab, data = null) {
 
     let html = '';
 
-    if (tab === 'products') {
+   if (tab === 'products') {
         html = `
-            <div class="form-group"><label>Nama Produk</label><input id="f_name" value="${data?.name || ''}" /></div>
-            <div class="form-group"><label>Harga</label><input id="f_price" value="${data?.price || ''}" /></div>
-            <div class="form-group"><label>Stok</label><input id="f_stock" type="number" value="${data?.stock || 0}" /></div>
+            <div class="form-group"><label>Nama Produk</label><input id="f_name" value="${data?.nama_menu || data?.name || ''}" /></div>
+            <div class="form-group"><label>Harga (Angka)</label><input id="f_price" type="number" value="${data?.harga || data?.price || ''}" /></div>
+            <div class="form-group"><label>Deskripsi</label><textarea id="f_desc">${data?.deskripsi || 'Soun klasik kenyal...'}</textarea></div>
+            <div class="form-group"><label>Path/URL Gambar</label><input id="f_img" value="${data?.gambar_url || 'FOTO PRODUK/foto.jpg'}" /></div>
         `;
+    
     } else if (tab === 'posts') {
         html = `
             <div class="form-group"><label>Judul</label><input id="f_title" value="${data?.title || ''}" /></div>
@@ -198,39 +200,43 @@ function openModal(tab, data = null) {
 
 // Event save
     document.getElementById('saveBtn').onclick = async function() {
-        let payload = {};
-
         if (tab === 'products') {
-            payload = {
+            const payload = {
                 name: document.getElementById('f_name').value,
                 price: document.getElementById('f_price').value,
-                stock: parseInt(document.getElementById('f_stock').value) || 0,
-                description: 'Soun klasik kenyal cocok untuk kuliner keluarga.', // default deskripsi form admin
-                gambar_url: 'FOTO PRODUK/foto.jpg' // default gambar form admin
+                description: document.getElementById('f_desc').value,
+                gambar_url: document.getElementById('f_img').value
             };
 
             try {
-                // Tembak API POST untuk menambah ke database Neon
-                const response = await fetch('/api/products', {
-                    method: 'POST',
+                let url = '/api/products';
+                let method = 'POST';
+
+                // Jika sedang mode edit, ubah metode ke PUT dan kirimkan ID
+                if (isEdit) {
+                    method = 'PUT';
+                    payload.id = data.id; 
+                }
+
+                const response = await fetch(url, {
+                    method: method,
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify(payload)
                 });
-                
+
                 if (response.ok) {
-                    alert('Produk berhasil disimpan ke database!');
-                    location.reload(); // Segarkan dashboard untuk mengambil data terbaru
+                    alert('Data berhasil disimpan ke Database!');
+                    location.reload(); // Segarkan halaman admin
                 } else {
-                    alert('Gagal menyimpan produk.');
+                    alert('Gagal menyimpan data.');
                 }
             } catch (err) {
-                console.error(err);
-                alert('Terjadi kesalahan jaringan.');
+                console.error("Error:", err);
             }
+        } else {
+            // Biarkan logika mock data untuk artikel, user, dll tetap di sini jika belum ada databasenya
+            closeModal();
         }
-        
-        // Logika untuk tab artikel/testimoni tiruan (mock) tetap dibiarkan di bawah jika diperlukan
-        closeModal();
     };
 
 }

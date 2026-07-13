@@ -32,7 +32,22 @@ export default async function handler(req, res) {
             
             return res.status(201).json({ success: true, data: result.rows[0] });
         }
+        // 4. EDIT PRODUK (PUT)
+        if (req.method === 'PUT') {
+            const { id, name, price, description, gambar_url } = req.body;
+            
+            // Bersihkan format harga (misal "Rp 35.000" jadi 35000)
+            const numericPrice = typeof price === 'string' 
+                ? parseInt(price.replace(/[^0-9]/g, '')) 
+                : parseInt(price);
 
+            await sql`
+                UPDATE menu 
+                SET nama_menu = ${name}, harga = ${numericPrice}, deskripsi = ${description}, gambar_url = ${gambar_url}
+                WHERE id = ${id}
+            `;
+            return res.status(200).json({ success: true, message: 'Produk berhasil diupdate' });
+        }
         // 3. HAPUS PRODUK (DELETE)
         if (req.method === 'DELETE') {
             const { id } = req.query;
