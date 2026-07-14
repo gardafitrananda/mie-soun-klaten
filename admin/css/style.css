@@ -300,7 +300,7 @@ body {
 }
 
 /* ============================================================
-   MODAL
+   MODAL — SCROLL FIX
    ============================================================ */
 .modal-overlay {
     display: none;
@@ -311,6 +311,7 @@ body {
     align-items: center;
     justify-content: center;
     z-index: 999;
+    padding: 20px;
 }
 
 .modal-overlay.open {
@@ -322,6 +323,8 @@ body {
     border-radius: var(--radius);
     max-width: 500px;
     width: 100%;
+    max-height: 90vh;          /* Batasi tinggi maksimal 90% viewport */
+    overflow-y: auto;          /* Aktifkan scroll vertikal jika konten overflow */
     padding: 28px 32px;
     box-shadow: 0 20px 60px rgba(0, 0, 0, 0.2);
     animation: modalIn .25s ease;
@@ -338,11 +341,18 @@ body {
     }
 }
 
+/* Sticky header agar tetap terlihat saat scroll */
 .modal-box .modal-header {
     display: flex;
     justify-content: space-between;
     align-items: center;
     margin-bottom: 16px;
+    position: sticky;
+    top: 0;
+    background: #fff;
+    z-index: 1;
+    padding-bottom: 12px;
+    border-bottom: 1px solid #eee;
 }
 
 .modal-box .modal-header h3 {
@@ -357,6 +367,13 @@ body {
 
 .modal-box .modal-header .close:hover {
     color: #000;
+}
+
+/* Body modal dengan scroll sendiri jika diperlukan */
+#modalBody {
+    max-height: 55vh;
+    overflow-y: auto;
+    padding-right: 4px;
 }
 
 .modal-box .form-group {
@@ -386,11 +403,17 @@ body {
     resize: vertical;
 }
 
+/* Sticky footer agar tetap terlihat di bawah */
 .modal-box .form-actions {
     display: flex;
     gap: 10px;
     justify-content: flex-end;
     margin-top: 16px;
+    position: sticky;
+    bottom: 0;
+    background: #fff;
+    padding-top: 12px;
+    border-top: 1px solid #eee;
 }
 
 /* ============================================================
@@ -434,6 +457,11 @@ body {
     .modal-box {
         margin: 16px;
         padding: 20px;
+        max-height: 85vh;
+    }
+
+    #modalBody {
+        max-height: 50vh;
     }
 }
 
