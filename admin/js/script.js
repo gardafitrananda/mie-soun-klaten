@@ -15,6 +15,36 @@ let currentTab = 'products';
 let editingId = null;
 
 // ============================================================
+// FUNGSI AKTIVASI TAB (TANPA RELOAD)
+// ============================================================
+function activateTab(tab) {
+    currentTab = tab;
+
+    // Update menu sidebar
+    document.querySelectorAll('.sidebar nav a').forEach(a => a.classList.remove('active'));
+    document.querySelector(`.sidebar nav a[data-tab="${tab}"]`)?.classList.add('active');
+
+    // Tampilkan panel yang sesuai
+    document.querySelectorAll('.panel').forEach(p => p.style.display = 'none');
+    document.getElementById('panel-' + tab).style.display = 'block';
+
+    // Update judul
+    const titles = {
+        products: 'Manajemen Produk',
+        testimonials: 'Manajemen Testimoni',
+        gallery: 'Manajemen Galeri',
+        users: 'Manajemen User'
+    };
+    document.getElementById('pageTitle').textContent = titles[tab] || 'Dashboard';
+
+    // Sembunyikan tombol tambah di tab users
+    document.getElementById('btnAdd').style.display = tab === 'users' ? 'none' : 'inline-flex';
+
+    // Simpan ke localStorage agar tab tetap aktif setelah refresh
+    localStorage.setItem('admin_active_tab', tab);
+}
+
+// ============================================================
 // RENDER FUNCTIONS
 // ============================================================
 function renderProducts() {
@@ -77,7 +107,13 @@ async function deleteItem(tab, id) {
     if (!confirm('Hapus data ini permanen?')) return;
     try {
         const response = await fetch(`/api/${tab}?id=${id}`, { method: 'DELETE' });
-        if (response.ok) { alert('Berhasil dihapus!'); location.reload(); }
+        if (response.ok) { 
+            alert('Berhasil dihapus!');
+            // Refresh data tanpa reload halaman
+            await fetchAllDataToAdmin();
+            // Aktifkan tab yang sedang aktif
+            activateTab(currentTab);
+        }
     } catch (err) { console.error(err); }
 }
 
@@ -166,8 +202,19 @@ function openModal(tab, data = null) {
         if (isEdit) payload.id = data.id;
         
         try {
-            const response = await fetch(`/api/${tab}`, { method: isEdit ? 'PUT' : 'POST', headers: {'Content-Type': 'application/json'}, body: JSON.stringify(payload) });
-            if (response.ok) { alert('Berhasil disimpan!'); location.reload(); }
+            const response = await fetch(`/api/${tab}`, { 
+                method: isEdit ? 'PUT' : 'POST', 
+                headers: {'Content-Type': 'application/json'}, 
+                body: JSON.stringify(payload) 
+            });
+            if (response.ok) { 
+                alert('Berhasil disimpan!'); 
+                closeModal();
+                // Refresh data tanpa reload halaman
+                await fetchAllDataToAdmin();
+                // Aktifkan tab yang sedang aktif (tetap di tab yang sama)
+                activateTab(currentTab);
+            }
         } catch (err) { console.error(err); }
     };
 }
@@ -197,23 +244,30 @@ function previewImage(input) {
     reader.readAsDataURL(file);
 }
 
+// ============================================================
+// SIDEBAR NAVIGATION (Pakai activateTab)
+// ============================================================
 document.querySelectorAll('.sidebar nav a').forEach(link => {
     link.addEventListener('click', function(e) {
         e.preventDefault();
-        document.querySelectorAll('.sidebar nav a').forEach(a => a.classList.remove('active'));
-        this.classList.add('active');
-        currentTab = this.dataset.tab;
-        document.querySelectorAll('.panel').forEach(p => p.style.display = 'none');
-        document.getElementById('panel-' + currentTab).style.display = 'block';
-        const titles = { products: 'Manajemen Produk', testimonials: 'Manajemen Testimoni', gallery: 'Manajemen Galeri', users: 'Manajemen User' };
-        document.getElementById('pageTitle').textContent = titles[currentTab] || 'Dashboard';
-        document.getElementById('btnAdd').style.display = currentTab === 'users' ? 'none' : 'inline-flex';
+        const tab = this.dataset.tab;
+        activateTab(tab);
     });
 });
 
+// ============================================================
+// TOMBOL TAMBAH
+// ============================================================
 document.getElementById('btnAdd').addEventListener('click', () => { editingId = null; openModal(currentTab, null); });
+
+// ============================================================
+// ESC UNTUK TUTUP MODAL
+// ============================================================
 document.addEventListener('keydown', e => { if (e.key === 'Escape') closeModal(); });
 
+// ============================================================
+// FETCH DATA DARI API
+// ============================================================
 async function fetchAllDataToAdmin() {
     try {
         const [resP, resT, resG] = await Promise.all([fetch('/api/products'), fetch('/api/testimonials'), fetch('/api/gallery')]);
@@ -224,4 +278,16 @@ async function fetchAllDataToAdmin() {
     } catch (err) { console.error(err); renderAll(); }
 }
 
-fetchAllDataToAdmin();
+// ============================================================
+// INIT — BACA TAB TERAKHIR DARI localStorage
+// ============================================================
+(async function init() {
+    // Ambil tab terakhir yang disimpan, default 'products'
+    const savedTab = localStorage.getItem('admin_active_tab') || 'products';
+    // Aktifkan tab tersebut
+    activateTab(savedTab);
+    // Ambil data dari API
+    await fetchAllDataToAdmin();
+    // Pastikan tombol tambah sesuai dengan tab
+    document.getElementById('btnAdd').style.display = savedTab === 'users' ? 'none' : 'inline-flex';
+})();
