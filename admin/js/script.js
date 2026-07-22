@@ -44,6 +44,8 @@ function activateTab(tab) {
     // Jika tab konten dibuka, pastikan datanya dimuat
     if (tab === 'content') {
         loadContentToAdmin();
+    } else if (tab === 'users') {
+        loadUsers(); 
     }
 
     // Simpan ke localStorage agar tab tetap aktif setelah refresh
@@ -438,3 +440,46 @@ async function saveContent() {
     // Pastikan tombol tambah sesuai dengan tab (sudah dihandle di activateTab, tapi kita pastikan lagi saat load awal)
     document.getElementById('btnAdd').style.display = (savedTab === 'users' || savedTab === 'content') ? 'none' : 'inline-flex';
 })();
+
+async function loadUsers() {
+    const tbody = document.getElementById('usersBody');
+    if (!tbody) return; // Hentikan jika elemen tabel belum dirender
+
+    tbody.innerHTML = '<tr><td colspan="5" style="text-align:center; padding:20px;">Memuat data user...</td></tr>';
+
+    try {
+        const response = await fetch('/api/users');
+        const result = await response.json();
+
+        if (result.success) {
+            tbody.innerHTML = ''; // Kosongkan tulisan "Memuat"
+            
+            result.data.forEach(user => {
+                // Beri warna khusus jika rolenya superadmin
+                const roleBadge = user.role === 'superadmin' 
+                    ? '<span style="background: #fee2e2; color: #ef4444; padding: 4px 8px; border-radius: 4px; font-size: 12px; font-weight: bold;">Super Admin</span>'
+                    : '<span style="background: #e0f2fe; color: #0284c7; padding: 4px 8px; border-radius: 4px; font-size: 12px; font-weight: bold;">Admin</span>';
+
+                const tr = document.createElement('tr');
+                tr.style.borderBottom = "1px solid #eee";
+                tr.innerHTML = `
+                    <td style="padding: 15px 20px;">${user.id}</td>
+                    <td style="padding: 15px 20px; font-weight: 500;">${user.name}</td>
+                    <td style="padding: 15px 20px; color: #666;">${user.email}</td>
+                    <td style="padding: 15px 20px;">${roleBadge}</td>
+                    <td style="padding: 15px 20px;">
+                        <button onclick="alert('Fitur edit user segera hadir!')" style="background: #f59e0b; color: white; border: none; padding: 6px 12px; border-radius: 4px; cursor: pointer;">
+                            <i class="fas fa-edit"></i>
+                        </button>
+                    </td>
+                `;
+                tbody.appendChild(tr);
+            });
+        } else {
+            tbody.innerHTML = `<tr><td colspan="5" style="text-align:center; color:red; padding:20px;">Gagal memuat: ${result.error}</td></tr>`;
+        }
+    } catch (error) {
+        console.error("Error fetching users:", error);
+        tbody.innerHTML = '<tr><td colspan="5" style="text-align:center; color:red; padding:20px;">Terjadi kesalahan jaringan. Cek console.</td></tr>';
+    }
+}
