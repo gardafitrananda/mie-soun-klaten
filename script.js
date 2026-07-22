@@ -232,6 +232,15 @@ async function renderWebContent() {
             inject('lp_stat3_num', d.stat3_num); inject('lp_stat3_label', '<i class="fas fa-map-marker-alt" style="margin-right:4px;"></i> ' + d.stat3_label);
             inject('lp_stat4_num', '<i class="fas fa-star" style="color:#FFD166;font-size:1.8rem;"></i> ' + d.stat4_num); 
             inject('lp_stat4_label', '<i class="fas fa-star" style="color:#FFD166;"></i> ' + d.stat4_label);
+            
+            inject('lp_sec_about_t', d.section_about_title); inject('lp_sec_about_s', d.section_about_sub);
+            inject('lp_sec_feat_t', d.section_feat_title); inject('lp_sec_feat_s', d.section_feat_sub);
+            inject('lp_sec_gal_t', '<i class="fas fa-images" style="color:#FF6B35;"></i> ' + d.section_gallery_title); inject('lp_sec_gal_s', d.section_gallery_sub);
+            inject('lp_sec_prod_t', d.section_prod_title); inject('lp_sec_prod_s', d.section_prod_sub);
+            inject('lp_sec_testi_t', '<i class="fas fa-star" style="color:#FFD166;"></i> ' + d.section_testi_title); inject('lp_sec_testi_s', d.section_testi_sub);
+            
+            inject('lp_trust1', d.trust1_text); inject('lp_trust2', d.trust2_text); inject('lp_trust3', d.trust3_text);
+            inject('lp_trust4', d.trust4_text); inject('lp_trust5', d.trust5_text);
 
             inject('lp_cta_desc', d.cta_desc);
             inject('lp_footer_address', '<i class="fas fa-map-marker-alt"></i> ' + d.footer_address);

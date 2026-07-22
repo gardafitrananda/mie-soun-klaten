@@ -314,6 +314,15 @@ async function loadContentToAdmin() {
             setVal('c_cta_desc', d.cta_desc);
             setVal('c_footer_address', d.footer_address);
             setVal('c_footer_copy', d.footer_copy);
+            
+            setVal('c_sec_about_t', d.section_about_title); setVal('c_sec_about_s', d.section_about_sub);
+            setVal('c_sec_feat_t', d.section_feat_title); setVal('c_sec_feat_s', d.section_feat_sub);
+            setVal('c_sec_gal_t', d.section_gallery_title); setVal('c_sec_gal_s', d.section_gallery_sub);
+            setVal('c_sec_prod_t', d.section_prod_title); setVal('c_sec_prod_s', d.section_prod_sub);
+            setVal('c_sec_testi_t', d.section_testi_title); setVal('c_sec_testi_s', d.section_testi_sub);
+            
+            setVal('c_trust1', d.trust1_text); setVal('c_trust2', d.trust2_text); setVal('c_trust3', d.trust3_text);
+            setVal('c_trust4', d.trust4_text); setVal('c_trust5', d.trust5_text);
         }
     } catch (err) { console.error(err); }
 }
@@ -365,7 +374,24 @@ async function saveContent() {
         
         cta_desc: document.getElementById('c_cta_desc').value,
         footer_address: document.getElementById('c_footer_address').value,
-        footer_copy: document.getElementById('c_footer_copy').value
+        footer_copy: document.getElementById('c_footer_copy').value,
+
+        section_about_title: document.getElementById('c_sec_about_t').value,
+        section_about_sub: document.getElementById('c_sec_about_s').value,
+        section_feat_title: document.getElementById('c_sec_feat_t').value,
+        section_feat_sub: document.getElementById('c_sec_feat_s').value,
+        section_gallery_title: document.getElementById('c_sec_gal_t').value,
+        section_gallery_sub: document.getElementById('c_sec_gal_s').value,
+        section_prod_title: document.getElementById('c_sec_prod_t').value,
+        section_prod_sub: document.getElementById('c_sec_prod_s').value,
+        section_testi_title: document.getElementById('c_sec_testi_t').value,
+        section_testi_sub: document.getElementById('c_sec_testi_s').value,
+        
+        trust1_text: document.getElementById('c_trust1').value,
+        trust2_text: document.getElementById('c_trust2').value,
+        trust3_text: document.getElementById('c_trust3').value,
+        trust4_text: document.getElementById('c_trust4').value,
+        trust5_text: document.getElementById('c_trust5').value,
     };
 
     try {
