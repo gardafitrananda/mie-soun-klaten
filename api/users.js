@@ -1,5 +1,39 @@
 const { sql } = require('@vercel/postgres');
+// Endpoint untuk proses Login
+app.post('/api/login', async (req, res) => {
+    const { email, password } = req.body;
 
+    try {
+        // Cari user di database Neon berdasarkan email
+        const result = await pool.query('SELECT * FROM users WHERE email = $1', [email]);
+        
+        if (result.rows.length === 0) {
+            return res.status(401).json({ success: false, error: 'User tidak ditemukan' });
+        }
+
+        const user = result.rows[0];
+
+        // Cocokkan password
+        // (Catatan: Ini pencocokan plain-text. Di dunia nyata sebaiknya menggunakan bcrypt)
+        if (user.password !== password) {
+            return res.status(401).json({ success: false, error: 'Password salah' });
+        }
+
+        // Hapus password dari object sebelum dikirim kembali ke frontend (untuk keamanan)
+        delete user.password;
+
+        // Kirim respon sukses beserta data usernya
+        res.json({ 
+            success: true, 
+            token: 'miesecret2026', 
+            data: user 
+        });
+
+    } catch (err) {
+        console.error(err);
+        res.status(500).json({ success: false, error: 'Terjadi kesalahan pada server' });
+    }
+});
 module.exports = async function handler(req, res) {
     // Pengaturan CORS
     res.setHeader('Access-Control-Allow-Origin', '*');

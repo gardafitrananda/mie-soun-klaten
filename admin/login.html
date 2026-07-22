@@ -14,6 +14,7 @@
         .form-group input { width: 100%; padding: 0.75rem; border: 1px solid #ddd; border-radius: 6px; box-sizing: border-box; font-family: inherit; }
         .btn-login { width: 100%; padding: 0.75rem; background: #FF7043; color: white; border: none; border-radius: 6px; font-weight: 700; cursor: pointer; font-size: 1rem; transition: background 0.3s; }
         .btn-login:hover { background: #E65100; }
+        .btn-login:disabled { background: #ccc; cursor: not-allowed; }
         .error-msg { color: #d32f2f; font-size: 0.85rem; margin-top: 1rem; display: none; }
     </style>
 </head>
@@ -22,34 +23,74 @@
 <div class="login-box">
     <h2>🍜 Admin Login</h2>
     <div class="form-group">
-        <label>Username</label>
-        <input type="text" id="username" placeholder="Masukkan username">
+        <label>Email</label>
+        <input type="email" id="email" placeholder="Masukkan email">
     </div>
     <div class="form-group">
         <label>Password</label>
         <input type="password" id="password" placeholder="Masukkan password">
     </div>
-    <button class="btn-login" onclick="prosesLogin()">Masuk Dashboard</button>
-    <div class="error-msg" id="errorMsg">Username atau password salah!</div>
+    <button class="btn-login" id="btnLogin" onclick="prosesLogin()">Masuk Dashboard</button>
+    <div class="error-msg" id="errorMsg">Email atau password salah!</div>
 </div>
 
 <script>
     // Cek jika sudah login, langsung tendang ke admin
-    if (localStorage.getItem('admin_token') === 'miesecret2026') {
+    if (localStorage.getItem('admin_token')) {
         window.location.href = '/admin/index.html';
     }
 
-    function prosesLogin() {
-        const user = document.getElementById('username').value;
-        const pass = document.getElementById('password').value;
+    async function prosesLogin() {
+        const emailInput = document.getElementById('email').value;
+        const passInput = document.getElementById('password').value;
+        const btn = document.getElementById('btnLogin');
+        const errorMsg = document.getElementById('errorMsg');
 
-        // Hardcode kredensial untuk sementara
-        if (user === 'admin' && pass === 'admin123') {
-            // Simpan token rahasia di browser
-            localStorage.setItem('admin_token', 'miesecret2026');
-            window.location.href = '/admin/index.html';
-        } else {
-            document.getElementById('errorMsg').style.display = 'block';
+        // Reset tampilan pesan error & ubah status tombol
+        errorMsg.style.display = 'none';
+        btn.innerHTML = 'Memeriksa...';
+        btn.disabled = true;
+
+        if(!emailInput || !passInput) {
+            errorMsg.textContent = "Email dan password wajib diisi!";
+            errorMsg.style.display = 'block';
+            btn.innerHTML = 'Masuk Dashboard';
+            btn.disabled = false;
+            return;
+        }
+
+        try {
+            // Mengirim request ke API backend
+            const response = await fetch('/api/login', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ email: emailInput, password: passInput })
+            });
+
+            const result = await response.json();
+
+            if (response.ok && result.success) {
+                // Simpan token login (bisa dari database/JWT jika ada, atau pakai token dummy sementara)
+                localStorage.setItem('admin_token', result.token || 'miesecret2026');
+                
+                // PENTING: Simpan data user yang login agar profil di sidebar (inisial, nama, role) bisa berubah otomatis!
+                if(result.data) {
+                    localStorage.setItem('user', JSON.stringify(result.data));
+                }
+
+                // Arahkan ke halaman admin
+                window.location.href = '/admin/index.html';
+            } else {
+                // Tampilkan pesan error dari backend
+                errorMsg.textContent = result.error || 'Email atau password salah!';
+                errorMsg.style.display = 'block';
+            }
+        } catch (error) {
+            errorMsg.textContent = 'Terjadi kesalahan jaringan. Coba lagi.';
+            errorMsg.style.display = 'block';
+        } finally {
+            btn.innerHTML = 'Masuk Dashboard';
+            btn.disabled = false;
         }
     }
 
