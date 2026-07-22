@@ -468,7 +468,7 @@ async function loadUsers() {
                     <td style="padding: 15px 20px; color: #666;">${user.email}</td>
                     <td style="padding: 15px 20px;">${roleBadge}</td>
                     <td style="padding: 15px 20px;">
-                        <button onclick="alert('Fitur edit user segera hadir!')" style="background: #f59e0b; color: white; border: none; padding: 6px 12px; border-radius: 4px; cursor: pointer;">
+                        <button onclick="editUser('${user.id}', '${user.name}', '${user.email}', '${user.role}')" style="background: #d4a373; color: white; border: none; padding: 8px 12px; border-radius: 6px; cursor: pointer;">
                             <i class="fas fa-edit"></i>
                         </button>
                     </td>
@@ -481,5 +481,71 @@ async function loadUsers() {
     } catch (error) {
         console.error("Error fetching users:", error);
         tbody.innerHTML = '<tr><td colspan="5" style="text-align:center; color:red; padding:20px;">Terjadi kesalahan jaringan. Cek console.</td></tr>';
+    }
+}
+// Memunculkan Modal dengan Form Edit User
+function editUser(id, name, email, role) {
+    document.getElementById('modalTitle').textContent = 'Edit User';
+    
+    // Injeksi form ke dalam body modal
+    document.getElementById('modalBody').innerHTML = `
+        <input type="hidden" id="editUserId" value="${id}">
+        
+        <label style="display:block; margin-bottom:5px; font-weight:bold;">Nama Lengkap</label>
+        <input type="text" id="editUserName" value="${name}" style="width:100%; padding:10px; margin-bottom:15px; border:1px solid #ccc; border-radius:6px;">
+        
+        <label style="display:block; margin-bottom:5px; font-weight:bold;">Email</label>
+        <input type="email" id="editUserEmail" value="${email}" style="width:100%; padding:10px; margin-bottom:15px; border:1px solid #ccc; border-radius:6px;">
+        
+        <label style="display:block; margin-bottom:5px; font-weight:bold;">Role</label>
+        <select id="editUserRole" style="width:100%; padding:10px; margin-bottom:15px; border:1px solid #ccc; border-radius:6px;">
+            <option value="superadmin" ${role === 'superadmin' ? 'selected' : ''}>Super Admin</option>
+            <option value="admin" ${role === 'admin' ? 'selected' : ''}>Admin</option>
+        </select>
+
+        <label style="display:block; margin-bottom:5px; font-weight:bold;">Password Baru <span style="color:#888; font-size:12px; font-weight:normal;">(Kosongkan jika tidak diubah)</span></label>
+        <input type="password" id="editUserPassword" placeholder="Ketik password baru..." style="width:100%; padding:10px; margin-bottom:15px; border:1px solid #ccc; border-radius:6px;">
+    `;
+    
+    // Arahkan tombol simpan di modal untuk menjalankan fungsi update
+    document.getElementById('saveBtn').onclick = saveUser;
+    
+    // Tampilkan modal
+    document.getElementById('modal').style.display = 'flex';
+}
+
+// Mengirim Data Hasil Edit ke Database
+async function saveUser() {
+    const id = document.getElementById('editUserId').value;
+    const name = document.getElementById('editUserName').value;
+    const email = document.getElementById('editUserEmail').value;
+    const role = document.getElementById('editUserRole').value;
+    const password = document.getElementById('editUserPassword').value;
+
+    const btn = document.getElementById('saveBtn');
+    btn.innerHTML = 'Menyimpan...';
+    btn.disabled = true;
+
+    try {
+        const response = await fetch('/api/users', {
+            method: 'PUT',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ id, name, email, role, password })
+        });
+
+        const result = await response.json();
+
+        if (response.ok && result.success) {
+            closeModal();
+            loadUsers(); // Refresh tabel otomatis
+        } else {
+            alert('Gagal menyimpan: ' + (result.error || 'Unknown error'));
+        }
+    } catch (error) {
+        console.error('Error saat simpan user:', error);
+        alert('Terjadi kesalahan pada sistem.');
+    } finally {
+        btn.innerHTML = 'Simpan';
+        btn.disabled = false;
     }
 }
