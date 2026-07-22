@@ -323,6 +323,13 @@ async function loadContentToAdmin() {
             
             setVal('c_trust1', d.trust1_text); setVal('c_trust2', d.trust2_text); setVal('c_trust3', d.trust3_text);
             setVal('c_trust4', d.trust4_text); setVal('c_trust5', d.trust5_text);
+
+            setVal('c_hb1_i', d.hero_badge1_icon); setVal('c_hb1_t', d.hero_badge1_text);
+            setVal('c_hb2_i', d.hero_badge2_icon); setVal('c_hb2_t', d.hero_badge2_text);
+            setVal('c_hb3_i', d.hero_badge3_icon); setVal('c_hb3_t', d.hero_badge3_text);
+
+            setVal('c_tr1_i', d.trust1_icon); setVal('c_tr2_i', d.trust2_icon); setVal('c_tr3_i', d.trust3_icon);
+            setVal('c_tr4_i', d.trust4_icon); setVal('c_tr5_i', d.trust5_icon);
         }
     } catch (err) { console.error(err); }
 }
@@ -392,6 +399,19 @@ async function saveContent() {
         trust3_text: document.getElementById('c_trust3').value,
         trust4_text: document.getElementById('c_trust4').value,
         trust5_text: document.getElementById('c_trust5').value,
+
+        hero_badge1_icon: document.getElementById('c_hb1_i').value,
+        hero_badge1_text: document.getElementById('c_hb1_t').value,
+        hero_badge2_icon: document.getElementById('c_hb2_i').value,
+        hero_badge2_text: document.getElementById('c_hb2_t').value,
+        hero_badge3_icon: document.getElementById('c_hb3_i').value,
+        hero_badge3_text: document.getElementById('c_hb3_t').value,
+
+        trust1_icon: document.getElementById('c_tr1_i').value,
+        trust2_icon: document.getElementById('c_tr2_i').value,
+        trust3_icon: document.getElementById('c_tr3_i').value,
+        trust4_icon: document.getElementById('c_tr4_i').value,
+        trust5_icon: document.getElementById('c_tr5_i').value,
     };
 
     try {

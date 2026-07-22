@@ -245,7 +245,24 @@ async function renderWebContent() {
             inject('lp_cta_desc', d.cta_desc);
             inject('lp_footer_address', '<i class="fas fa-map-marker-alt"></i> ' + d.footer_address);
             inject('lp_footer_copy', '© ' + new Date().getFullYear() + ' ' + d.footer_copy);
-        }
+
+            // Teks Badge Hero
+            inject('lp_hb1_t', d.hero_badge1_text);
+            inject('lp_hb2_t', d.hero_badge2_text);
+            inject('lp_hb3_t', d.hero_badge3_text);
+
+            // Ikon Badge Hero (Ubah class)
+            if(document.getElementById('lp_hb1_i')) document.getElementById('lp_hb1_i').className = d.hero_badge1_icon;
+            if(document.getElementById('lp_hb2_i')) document.getElementById('lp_hb2_i').className = d.hero_badge2_icon;
+            if(document.getElementById('lp_hb3_i')) document.getElementById('lp_hb3_i').className = d.hero_badge3_icon;
+
+            // Ikon Trustbar (Ubah class)
+            if(document.getElementById('lp_tr1_i')) document.getElementById('lp_tr1_i').className = d.trust1_icon;
+            if(document.getElementById('lp_tr2_i')) document.getElementById('lp_tr2_i').className = d.trust2_icon;
+            if(document.getElementById('lp_tr3_i')) document.getElementById('lp_tr3_i').className = d.trust3_icon;
+            if(document.getElementById('lp_tr4_i')) document.getElementById('lp_tr4_i').className = d.trust4_icon;
+            if(document.getElementById('lp_tr5_i')) document.getElementById('lp_tr5_i').className = d.trust5_icon;
+          }
     } catch (error) { console.error('Gagal memuat konten teks:', error); }
 }
 
