@@ -20,6 +20,7 @@
             <a href="#" class="active" data-tab="products"><i class="fas fa-box"></i> Produk</a>
             <a href="#" data-tab="testimonials"><i class="fas fa-star"></i> Testimoni</a>
             <a href="#" data-tab="gallery"><i class="fas fa-images"></i> Galeri</a>
+            <a href="#" data-tab="content"><i class="fas fa-globe"></i> Konten Web</a>
             <a href="#" data-tab="users"><i class="fas fa-users-cog"></i> User</a>
         </nav>
         <div style="padding: 20px; margin-top: 30px;">
@@ -95,6 +96,28 @@
          </table>
      </div>
  </div>
+
+        <!-- Panel: Konten Web -->
+<div class="panel" id="panel-content" style="display:none;">
+    <div class="card" style="max-width: 800px;">
+        <h3 style="margin-bottom: 20px;">Edit Konten Halaman Utama</h3>
+        <div class="form-group"><label>Judul Utama (Hero)</label><input id="c_hero_title" /></div>
+        <div class="form-group"><label>Sub-judul (Hero)</label><input id="c_hero_subtitle" /></div>
+        <div class="form-group"><label>Teks Tentang Kami</label><textarea id="c_about_text" rows="5"></textarea></div>
+
+        <div class="form-group" style="background:#f9f9f9; padding:1rem; border-radius:8px; border:1px dashed #ccc;">
+            <label>Foto Latar Utama (Hero Image)</label>
+            <input type="file" accept="image/*" onchange="previewHeroImage(this)" style="margin-bottom:10px;" />
+            <input type="hidden" id="c_hero_image" />
+            <div><img id="c_img_preview" src="" style="max-height:150px; border-radius:5px;"></div>
+        </div>
+
+        <button onclick="saveContent()" style="background: var(--orange); color: white; padding: 10px 20px; border: none; border-radius: 5px; cursor: pointer; font-weight: bold; width: 100%;">
+            Simpan Perubahan Konten
+        </button>
+    </div>
+</div>
+
         <!-- Panel: Users -->
         <div class="panel" id="panel-users" style="display:none;">
             <div class="card">

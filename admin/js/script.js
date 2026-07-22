@@ -291,3 +291,56 @@ async function fetchAllDataToAdmin() {
     // Pastikan tombol tambah sesuai dengan tab
     document.getElementById('btnAdd').style.display = savedTab === 'users' ? 'none' : 'inline-flex';
 })();
+// ============================================================
+// KONTEN WEB (LANDING PAGE CMS)
+// ============================================================
+async function loadContentToAdmin() {
+    try {
+        const response = await fetch('/api/content');
+        const json = await response.json();
+        if (json.success && json.data) {
+            document.getElementById('c_hero_title').value = json.data.hero_title || '';
+            document.getElementById('c_hero_subtitle').value = json.data.hero_subtitle || '';
+            document.getElementById('c_about_text').value = json.data.about_text || '';
+            document.getElementById('c_hero_image').value = json.data.hero_image || '';
+            document.getElementById('c_img_preview').src = json.data.hero_image || '';
+        }
+    } catch (err) { console.error(err); }
+}
+
+function previewHeroImage(input) {
+    const file = input.files[0];
+    if (!file || !file.type.match(/image.*/)) return;
+    const reader = new FileReader();
+    reader.onload = function(e) {
+        const img = new Image();
+        img.onload = function() {
+            const MAX_WIDTH = 1200; // Ukuran lebih besar untuk gambar hero
+            let width = img.width; let height = img.height;
+            if (width > MAX_WIDTH) { height = Math.round((height * MAX_WIDTH) / width); width = MAX_WIDTH; }
+            const canvas = document.createElement('canvas'); canvas.width = width; canvas.height = height;
+            canvas.getContext('2d').drawImage(img, 0, 0, width, height);
+            const compressed = canvas.toDataURL('image/jpeg', 0.8);
+            document.getElementById('c_img_preview').src = compressed;
+            document.getElementById('c_hero_image').value = compressed;
+        };
+        img.src = e.target.result;
+    }
+    reader.readAsDataURL(file);
+}
+
+async function saveContent() {
+    const payload = {
+        hero_title: document.getElementById('c_hero_title').value,
+        hero_subtitle: document.getElementById('c_hero_subtitle').value,
+        about_text: document.getElementById('c_about_text').value,
+        hero_image: document.getElementById('c_hero_image').value
+    };
+    try {
+        const response = await fetch('/api/content', { method: 'PUT', headers: {'Content-Type': 'application/json'}, body: JSON.stringify(payload) });
+        if (response.ok) alert('Konten Halaman Berhasil Diperbarui!');
+    } catch (err) { console.error(err); }
+}
+
+// Panggil fungsi ini agar form terisi saat dashboard dibuka
+loadContentToAdmin();

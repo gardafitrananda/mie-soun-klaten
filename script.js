@@ -181,8 +181,33 @@ async function loadGalleryFromDB() {
 }
 
 // 4. Jalankan Ketiga fungsi SETELAH seluruh halaman (DOM) selesai dimuat
+async function loadContentFromDB() {
+    try {
+        const response = await fetch('/api/content');
+        const json = await response.json();
+        if (json.success && json.data) {
+            const data = json.data;
+            
+            // Mengubah teks (pastikan ID-nya cocok dengan di index.html kamu)
+            if(document.getElementById('lp_hero_title')) document.getElementById('lp_hero_title').innerText = data.hero_title;
+            if(document.getElementById('lp_hero_subtitle')) document.getElementById('lp_hero_subtitle').innerText = data.hero_subtitle;
+            if(document.getElementById('lp_about_text')) document.getElementById('lp_about_text').innerText = data.about_text;
+            
+            // Mengubah gambar latar Hero (Contoh jika hero pakai background-image di CSS)
+            const heroSection = document.querySelector('.hero-section'); // Sesuaikan class section-nya
+            if(document.getElementById('lp_hero_image') && data.hero_image) {
+    document.getElementById('lp_hero_image').src = data.hero_image;
+}
+        }
+    } catch (error) {
+        console.error("Gagal mengambil konten utama:", error);
+    }
+}
+
+// Tambahkan panggilannya di event listener yang sudah ada:
 document.addEventListener('DOMContentLoaded', () => {
     loadProductsFromDB();
     loadTestimonialsFromDB();
-    loadGalleryFromDB(); 
+    loadGalleryFromDB();
+    loadContentFromDB(); // <--- Panggil di sini
 });
