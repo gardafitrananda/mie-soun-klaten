@@ -292,11 +292,28 @@ async function loadContentToAdmin() {
         const response = await fetch('/api/content');
         const json = await response.json();
         if (json.success && json.data) {
-            document.getElementById('c_hero_title').value = json.data.hero_title || '';
-            document.getElementById('c_hero_subtitle').value = json.data.hero_subtitle || '';
-            document.getElementById('c_about_text').value = json.data.about_text || '';
-            document.getElementById('c_hero_image').value = json.data.hero_image || '';
-            document.getElementById('c_img_preview').src = json.data.hero_image || '';
+            const d = json.data;
+            // Gunakan fungsi bantu agar tidak error jika field kosong di DB
+            const setVal = (id, val) => { if(document.getElementById(id)) document.getElementById(id).value = val || ''; }
+            
+            setVal('c_hero_title', d.hero_title);
+            setVal('c_hero_subtitle', d.hero_subtitle);
+            setVal('c_about_text', d.about_text);
+            document.getElementById('c_img_preview').src = d.hero_image || '';
+            document.getElementById('c_hero_image').value = d.hero_image || '';
+
+            setVal('c_feat1_title', d.feat1_title); setVal('c_feat1_desc', d.feat1_desc);
+            setVal('c_feat2_title', d.feat2_title); setVal('c_feat2_desc', d.feat2_desc);
+            setVal('c_feat3_title', d.feat3_title); setVal('c_feat3_desc', d.feat3_desc);
+
+            setVal('c_stat1_num', d.stat1_num); setVal('c_stat1_label', d.stat1_label);
+            setVal('c_stat2_num', d.stat2_num); setVal('c_stat2_label', d.stat2_label);
+            setVal('c_stat3_num', d.stat3_num); setVal('c_stat3_label', d.stat3_label);
+            setVal('c_stat4_num', d.stat4_num); setVal('c_stat4_label', d.stat4_label);
+
+            setVal('c_cta_desc', d.cta_desc);
+            setVal('c_footer_address', d.footer_address);
+            setVal('c_footer_copy', d.footer_copy);
         }
     } catch (err) { console.error(err); }
 }
@@ -323,15 +340,41 @@ function previewHeroImage(input) {
 }
 
 async function saveContent() {
+    // Kumpulkan semua data dari form
     const payload = {
         hero_title: document.getElementById('c_hero_title').value,
         hero_subtitle: document.getElementById('c_hero_subtitle').value,
         about_text: document.getElementById('c_about_text').value,
-        hero_image: document.getElementById('c_hero_image').value
+        hero_image: document.getElementById('c_hero_image').value,
+        
+        feat1_title: document.getElementById('c_feat1_title').value,
+        feat1_desc: document.getElementById('c_feat1_desc').value,
+        feat2_title: document.getElementById('c_feat2_title').value,
+        feat2_desc: document.getElementById('c_feat2_desc').value,
+        feat3_title: document.getElementById('c_feat3_title').value,
+        feat3_desc: document.getElementById('c_feat3_desc').value,
+        
+        stat1_num: document.getElementById('c_stat1_num').value,
+        stat1_label: document.getElementById('c_stat1_label').value,
+        stat2_num: document.getElementById('c_stat2_num').value,
+        stat2_label: document.getElementById('c_stat2_label').value,
+        stat3_num: document.getElementById('c_stat3_num').value,
+        stat3_label: document.getElementById('c_stat3_label').value,
+        stat4_num: document.getElementById('c_stat4_num').value,
+        stat4_label: document.getElementById('c_stat4_label').value,
+        
+        cta_desc: document.getElementById('c_cta_desc').value,
+        footer_address: document.getElementById('c_footer_address').value,
+        footer_copy: document.getElementById('c_footer_copy').value
     };
+
     try {
-        const response = await fetch('/api/content', { method: 'PUT', headers: {'Content-Type': 'application/json'}, body: JSON.stringify(payload) });
-        if (response.ok) alert('Konten Halaman Berhasil Diperbarui!');
+        const response = await fetch('/api/content', { 
+            method: 'PUT', 
+            headers: {'Content-Type': 'application/json'}, 
+            body: JSON.stringify(payload) 
+        });
+        if (response.ok) alert('Seluruh Konten Halaman Berhasil Diperbarui!');
     } catch (err) { console.error(err); }
 }
 

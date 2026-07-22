@@ -203,11 +203,48 @@ async function loadContentFromDB() {
         console.error("Gagal mengambil konten utama:", error);
     }
 }
+async function renderWebContent() {
+    try {
+        const response = await fetch('/api/content');
+        const json = await response.json();
+        if (json.success && json.data) {
+            const d = json.data;
+            
+            // Fungsi pintar agar web tidak rusak jika ada elemen ID yang belum terpasang
+            const inject = (id, val) => { 
+                const el = document.getElementById(id); 
+                if(el && val) el.innerHTML = val; // pakai innerHTML agar <br> terbaca
+            };
+
+            inject('lp_hero_title', d.hero_title);
+            inject('lp_hero_subtitle', d.hero_subtitle);
+            inject('lp_about_text', d.about_text);
+            
+            const heroImg = document.getElementById('lp_hero_image');
+            if(heroImg && d.hero_image) heroImg.src = d.hero_image;
+
+            inject('lp_feat1_title', d.feat1_title); inject('lp_feat1_desc', d.feat1_desc);
+            inject('lp_feat2_title', d.feat2_title); inject('lp_feat2_desc', d.feat2_desc);
+            inject('lp_feat3_title', d.feat3_title); inject('lp_feat3_desc', d.feat3_desc);
+
+            inject('lp_stat1_num', d.stat1_num); inject('lp_stat1_label', '<i class="fas fa-users" style="margin-right:4px;"></i> ' + d.stat1_label);
+            inject('lp_stat2_num', d.stat2_num); inject('lp_stat2_label', '<i class="fas fa-calendar-alt" style="margin-right:4px;"></i> ' + d.stat2_label);
+            inject('lp_stat3_num', d.stat3_num); inject('lp_stat3_label', '<i class="fas fa-map-marker-alt" style="margin-right:4px;"></i> ' + d.stat3_label);
+            inject('lp_stat4_num', '<i class="fas fa-star" style="color:#FFD166;font-size:1.8rem;"></i> ' + d.stat4_num); 
+            inject('lp_stat4_label', '<i class="fas fa-star" style="color:#FFD166;"></i> ' + d.stat4_label);
+
+            inject('lp_cta_desc', d.cta_desc);
+            inject('lp_footer_address', '<i class="fas fa-map-marker-alt"></i> ' + d.footer_address);
+            inject('lp_footer_copy', '© ' + new Date().getFullYear() + ' ' + d.footer_copy);
+        }
+    } catch (error) { console.error('Gagal memuat konten teks:', error); }
+}
 
 // Tambahkan panggilannya di event listener yang sudah ada:
 document.addEventListener('DOMContentLoaded', () => {
     loadProductsFromDB();
     loadTestimonialsFromDB();
     loadGalleryFromDB();
-    loadContentFromDB(); // <--- Panggil di sini
+    loadContentFromDB();
+    renderWebContent();
 });

@@ -99,41 +99,84 @@
 
        <!-- Panel: Konten Web -->
     <div class="panel" id="panel-content" style="display:none;">
-        <div class="card" style="max-width: 800px; padding: 2rem; border-radius: 12px; box-shadow: 0 4px 6px rgba(0,0,0,0.05);">
-            <h3 style="margin-top: 0; margin-bottom: 25px; color: #333; border-bottom: 2px solid #f0f0f0; padding-bottom: 15px;">
-                <i class="fas fa-edit" style="color: #FF7043; margin-right: 8px;"></i> Edit Konten Halaman Utama
+        <div class="card" style="max-width: 900px; padding: 30px; background: #fff; border-radius: 12px; box-shadow: 0 4px 15px rgba(0,0,0,0.05);">
+            <h3 style="margin-top: 0; margin-bottom: 25px; border-bottom: 2px solid #f0f0f0; padding-bottom: 15px; color: #333;">
+                <i class="fas fa-edit" style="color: #FF7043;"></i> Edit Seluruh Konten Website
             </h3>
             
-            <div style="margin-bottom: 1.5rem;">
-                <label style="display: block; font-weight: bold; margin-bottom: 8px; color: #444;">Judul Utama (Hero)</label>
-                <input id="c_hero_title" type="text" style="width: 100%; padding: 12px; border: 1px solid #ccc; border-radius: 6px; box-sizing: border-box; font-size: 1rem; font-family: inherit;" />
-            </div>
-            
-            <div style="margin-bottom: 1.5rem;">
-                <label style="display: block; font-weight: bold; margin-bottom: 8px; color: #444;">Sub-judul (Hero)</label>
-                <input id="c_hero_subtitle" type="text" style="width: 100%; padding: 12px; border: 1px solid #ccc; border-radius: 6px; box-sizing: border-box; font-size: 1rem; font-family: inherit;" />
-            </div>
-            
-            <div style="margin-bottom: 1.5rem;">
-                <label style="display: block; font-weight: bold; margin-bottom: 8px; color: #444;">Teks Tentang Kami</label>
-                <textarea id="c_about_text" rows="6" style="width: 100%; padding: 12px; border: 1px solid #ccc; border-radius: 6px; box-sizing: border-box; font-size: 1rem; font-family: inherit; resize: vertical; line-height: 1.5;"></textarea>
-            </div>
-            
-            <div style="margin-bottom: 2rem; background: #f9fafb; padding: 1.5rem; border-radius: 8px; border: 2px dashed #d1d5db;">
-                <label style="display: block; font-weight: bold; margin-bottom: 5px; color: #444;">Foto Latar Utama (Hero Image)</label>
-                <p style="font-size: 0.85rem; color: #6b7280; margin-top: 0; margin-bottom: 15px;">*Gambar akan otomatis dikompres jika ukurannya terlalu besar.</p>
-                <input type="file" accept="image/*" onchange="previewHeroImage(this)" style="margin-bottom: 15px; width: 100%;" />
+            <!-- BAGIAN 1: HERO & TENTANG -->
+            <div style="background: #fdfdfd; padding: 20px; border-radius: 8px; border: 1px solid #eee; margin-bottom: 25px;">
+                <h4 style="margin-top: 0; color: #FF7043;"><i class="fas fa-home"></i> 1. Bagian Atas (Hero & Tentang Kami)</h4>
+                
+                <label style="display: block; font-weight: bold; margin-bottom: 8px;">Judul Utama (Hero)</label>
+                <input type="text" id="c_hero_title" style="width: 100%; padding: 10px; margin-bottom: 15px; border: 1px solid #ccc; border-radius: 6px;" />
+                
+                <label style="display: block; font-weight: bold; margin-bottom: 8px;">Sub-judul (Hero)</label>
+                <textarea id="c_hero_subtitle" rows="2" style="width: 100%; padding: 10px; margin-bottom: 15px; border: 1px solid #ccc; border-radius: 6px;"></textarea>
+                
+                <label style="display: block; font-weight: bold; margin-bottom: 8px;">Teks Tentang Kami</label>
+                <textarea id="c_about_text" rows="4" style="width: 100%; padding: 10px; margin-bottom: 15px; border: 1px solid #ccc; border-radius: 6px;"></textarea>
+
+                <label style="display: block; font-weight: bold; margin-bottom: 8px;">Foto Latar Utama (Hero Image)</label>
+                <input type="file" accept="image/*" onchange="previewHeroImage(this)" style="margin-bottom: 10px; width: 100%;" />
                 <input type="hidden" id="c_hero_image" />
-                <div style="text-align: center; background: #fff; padding: 10px; border-radius: 6px; border: 1px solid #e5e7eb;">
-                    <!-- Gambar preview (otomatis disembunyikan jika kosong agar tidak muncul icon error) -->
-                    <img id="c_img_preview" src="" style="max-height: 250px; max-width: 100%; border-radius: 5px; display: none;" onload="this.style.display='inline-block'; document.getElementById('c_img_placeholder').style.display='none';" onerror="this.style.display='none'">
-                    <span id="c_img_placeholder" style="color: #9ca3af; font-size: 0.9rem; display: inline-block; padding: 20px 0;">Belum ada gambar terpilih</span>
+                <div style="text-align: center; background: #eee; border-radius: 6px; padding: 10px;">
+                    <img id="c_img_preview" src="" style="max-height: 150px; border-radius: 6px; object-fit: cover;">
                 </div>
+            </div>
+
+            <!-- BAGIAN 2: KENAPA PILIH KAMI -->
+            <div style="background: #fdfdfd; padding: 20px; border-radius: 8px; border: 1px solid #eee; margin-bottom: 25px;">
+                <h4 style="margin-top: 0; color: #FF7043;"><i class="fas fa-star"></i> 2. Bagian Fitur (Kenapa Pilih Kami)</h4>
+                
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-bottom: 15px;">
+                    <div>
+                        <label style="display: block; font-weight: bold; margin-bottom: 8px;">Judul Fitur 1</label>
+                        <input type="text" id="c_feat1_title" style="width: 100%; padding: 10px; border: 1px solid #ccc; border-radius: 6px;" />
+                        <textarea id="c_feat1_desc" rows="2" placeholder="Deskripsi 1" style="width: 100%; padding: 10px; margin-top: 5px; border: 1px solid #ccc; border-radius: 6px;"></textarea>
+                    </div>
+                    <div>
+                        <label style="display: block; font-weight: bold; margin-bottom: 8px;">Judul Fitur 2</label>
+                        <input type="text" id="c_feat2_title" style="width: 100%; padding: 10px; border: 1px solid #ccc; border-radius: 6px;" />
+                        <textarea id="c_feat2_desc" rows="2" placeholder="Deskripsi 2" style="width: 100%; padding: 10px; margin-top: 5px; border: 1px solid #ccc; border-radius: 6px;"></textarea>
+                    </div>
+                    <div>
+                        <label style="display: block; font-weight: bold; margin-bottom: 8px;">Judul Fitur 3</label>
+                        <input type="text" id="c_feat3_title" style="width: 100%; padding: 10px; border: 1px solid #ccc; border-radius: 6px;" />
+                        <textarea id="c_feat3_desc" rows="2" placeholder="Deskripsi 3" style="width: 100%; padding: 10px; margin-top: 5px; border: 1px solid #ccc; border-radius: 6px;"></textarea>
+                    </div>
+                </div>
+            </div>
+
+            <!-- BAGIAN 3: STATISTIK & PROMO -->
+            <div style="background: #fdfdfd; padding: 20px; border-radius: 8px; border: 1px solid #eee; margin-bottom: 25px;">
+                <h4 style="margin-top: 0; color: #FF7043;"><i class="fas fa-chart-line"></i> 3. Angka Statistik & Promo Bawah</h4>
+                
+                <div style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; margin-bottom: 20px;">
+                    <div><label>Stat 1 (Angka)</label><input type="text" id="c_stat1_num" style="width:100%; padding:8px;" placeholder="1000+"/><input type="text" id="c_stat1_label" style="width:100%; padding:8px; margin-top:5px;" placeholder="Pelanggan"/></div>
+                    <div><label>Stat 2 (Angka)</label><input type="text" id="c_stat2_num" style="width:100%; padding:8px;" placeholder="19+"/><input type="text" id="c_stat2_label" style="width:100%; padding:8px; margin-top:5px;" placeholder="Tahun"/></div>
+                    <div><label>Stat 3 (Angka)</label><input type="text" id="c_stat3_num" style="width:100%; padding:8px;" placeholder="34"/><input type="text" id="c_stat3_label" style="width:100%; padding:8px; margin-top:5px;" placeholder="Provinsi"/></div>
+                    <div><label>Stat 4 (Angka)</label><input type="text" id="c_stat4_num" style="width:100%; padding:8px;" placeholder="4.9"/><input type="text" id="c_stat4_label" style="width:100%; padding:8px; margin-top:5px;" placeholder="Rating"/></div>
+                </div>
+
+                <label style="display: block; font-weight: bold; margin-bottom: 8px;">Teks Promo Bawah (Sebelum Footer)</label>
+                <textarea id="c_cta_desc" rows="3" style="width: 100%; padding: 10px; border: 1px solid #ccc; border-radius: 6px;" placeholder="Tuliskan promo atau ajakan aksi di sini..."></textarea>
+            </div>
+
+            <!-- BAGIAN 4: FOOTER -->
+            <div style="background: #fdfdfd; padding: 20px; border-radius: 8px; border: 1px solid #eee; margin-bottom: 30px;">
+                <h4 style="margin-top: 0; color: #FF7043;"><i class="fas fa-shoe-prints"></i> 4. Informasi Footer</h4>
+                
+                <label style="display: block; font-weight: bold; margin-bottom: 8px;">Alamat (Bawah)</label>
+                <input type="text" id="c_footer_address" style="width: 100%; padding: 10px; margin-bottom: 15px; border: 1px solid #ccc; border-radius: 6px;" />
+                
+                <label style="display: block; font-weight: bold; margin-bottom: 8px;">Teks Copyright</label>
+                <input type="text" id="c_footer_copy" style="width: 100%; padding: 10px; border: 1px solid #ccc; border-radius: 6px;" />
             </div>
             
             <!-- TOMBOL SIMPAN -->
-            <button onclick="saveContent()" style="background: #FF7043; color: white; padding: 14px 20px; border: none; border-radius: 8px; cursor: pointer; font-weight: bold; font-size: 1.1rem; width: 100%; transition: background 0.3s; box-shadow: 0 4px 6px rgba(255, 112, 67, 0.2);">
-                <i class="fas fa-save" style="margin-right: 8px;"></i> Simpan Perubahan Konten
+            <button onclick="saveContent()" style="background: #FF7043; color: white; padding: 15px 20px; border: none; border-radius: 8px; cursor: pointer; font-weight: bold; width: 100%; font-size: 1.1rem; box-shadow: 0 4px 6px rgba(255, 112, 67, 0.3);">
+                <i class="fas fa-save" style="margin-right: 8px;"></i> Simpan Semua Perubahan Konten
             </button>
         </div>
     </div>
