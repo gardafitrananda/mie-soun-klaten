@@ -445,7 +445,8 @@ async function loadUsers() {
     const tbody = document.getElementById('usersBody');
     if (!tbody) return; // Hentikan jika elemen tabel belum dirender
 
-    tbody.innerHTML = '<tr><td colspan="5" style="text-align:center; padding:20px;">Memuat data user...</td></tr>';
+    // Tampilan saat loading dibuat lebih rapi
+    tbody.innerHTML = '<tr><td colspan="5" style="text-align:center; padding:30px; color:#888;"><i class="fas fa-spinner fa-spin" style="margin-right:8px;"></i> Memuat data user...</td></tr>';
 
     try {
         const response = await fetch('/api/users');
@@ -455,20 +456,29 @@ async function loadUsers() {
             tbody.innerHTML = ''; // Kosongkan tulisan "Memuat"
             
             result.data.forEach(user => {
-                // Beri warna khusus jika rolenya superadmin
-                const roleBadge = user.role === 'superadmin' 
-                    ? '<span style="background: #fee2e2; color: #ef4444; padding: 4px 8px; border-radius: 4px; font-size: 12px; font-weight: bold;">Super Admin</span>'
-                    : '<span style="background: #e0f2fe; color: #0284c7; padding: 4px 8px; border-radius: 4px; font-size: 12px; font-weight: bold;">Admin</span>';
+                // Antisipasi perbedaan huruf besar/kecil dari database
+                const userRole = (user.role || '').toLowerCase().replace(/\s/g, ''); 
+
+                // Menentukan warna badge berdasarkan role
+                const roleBadge = (userRole === 'superadmin')
+                    ? '<span style="background: #fee2e2; color: #ef4444; padding: 6px 12px; border-radius: 20px; font-size: 12px; font-weight: bold; display: inline-block;"><i class="fas fa-shield-alt" style="margin-right:4px;"></i> Super Admin</span>'
+                    : '<span style="background: #e0f2fe; color: #0284c7; padding: 6px 12px; border-radius: 20px; font-size: 12px; font-weight: bold; display: inline-block;"><i class="fas fa-user" style="margin-right:4px;"></i> Admin</span>';
 
                 const tr = document.createElement('tr');
-                tr.style.borderBottom = "1px solid #eee";
+                
+                // Efek hover sederhana pada baris tabel agar terasa interaktif
+                tr.style.transition = "background-color 0.2s ease";
+                tr.onmouseover = () => tr.style.backgroundColor = "#fafafa";
+                tr.onmouseout = () => tr.style.backgroundColor = "transparent";
+
+                // Perhatikan pemanggilan variabel ${roleBadge} dan pembagian width/padding
                 tr.innerHTML = `
-                    <td style="padding: 15px 20px;">${user.id}</td>
-                    <td style="padding: 15px 20px; font-weight: 500;">${user.name}</td>
-                    <td style="padding: 15px 20px; color: #666;">${user.email}</td>
-                    <td style="padding: 15px 20px;">${roleBadge}</td>
-                    <td style="padding: 15px 20px;">
-                        <button onclick="editUser('${user.id}', '${user.name}', '${user.email}', '${user.role}')" style="background: #d4a373; color: white; border: none; padding: 8px 12px; border-radius: 6px; cursor: pointer;">
+                    <td style="padding: 16px 12px; border-bottom: 1px solid #f0f0f0; text-align: center; color: #666; font-weight: bold; width: 5%;">${user.id}</td>
+                    <td style="padding: 16px 12px; border-bottom: 1px solid #f0f0f0; color: #333; font-weight: 500;">${user.name}</td>
+                    <td style="padding: 16px 12px; border-bottom: 1px solid #f0f0f0; color: #555;">${user.email}</td>
+                    <td style="padding: 16px 12px; border-bottom: 1px solid #f0f0f0;">${roleBadge}</td>
+                    <td style="padding: 16px 12px; border-bottom: 1px solid #f0f0f0; text-align: center; width: 10%;">
+                        <button onclick="editUser('${user.id}', '${user.name}', '${user.email}', '${user.role}')" style="background: #FF7043; color: white; border: none; padding: 8px 14px; border-radius: 6px; cursor: pointer; transition: 0.2s; box-shadow: 0 2px 4px rgba(255,112,67,0.2);" title="Edit Data User">
                             <i class="fas fa-edit"></i>
                         </button>
                     </td>
@@ -476,11 +486,11 @@ async function loadUsers() {
                 tbody.appendChild(tr);
             });
         } else {
-            tbody.innerHTML = `<tr><td colspan="5" style="text-align:center; color:red; padding:20px;">Gagal memuat: ${result.error}</td></tr>`;
+            tbody.innerHTML = `<tr><td colspan="5" style="text-align:center; color:#ef4444; padding:30px;"><i class="fas fa-exclamation-triangle"></i> Gagal memuat: ${result.error}</td></tr>`;
         }
     } catch (error) {
         console.error("Error fetching users:", error);
-        tbody.innerHTML = '<tr><td colspan="5" style="text-align:center; color:red; padding:20px;">Terjadi kesalahan jaringan. Cek console.</td></tr>';
+        tbody.innerHTML = '<tr><td colspan="5" style="text-align:center; color:#ef4444; padding:30px;"><i class="fas fa-wifi"></i> Terjadi kesalahan jaringan. Cek console.</td></tr>';
     }
 }
 // Memunculkan Modal dengan Form Edit User
@@ -547,5 +557,20 @@ async function saveUser() {
     } finally {
         btn.innerHTML = 'Simpan';
         btn.disabled = false;
+    }
+}
+// Fungsi untuk menyembunyikan/menutup modal
+function closeModal() {
+    const modal = document.getElementById('modal');
+    if (modal) {
+        modal.style.display = 'none';
+    }
+}
+
+// (Opsional) Fitur tambahan: Tutup modal otomatis jika user mengklik area gelap di luarnya
+window.onclick = function(event) {
+    const modal = document.getElementById('modal');
+    if (event.target === modal) {
+        closeModal();
     }
 }
