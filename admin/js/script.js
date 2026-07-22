@@ -99,14 +99,8 @@ function renderGallery() {
     ).join('');
 }
 
-function renderUsers() {
-    const tbody = document.getElementById('usersBody');
-    if (!tbody) return;
-    users = [{ id: 1, name: 'Admin', email: 'admin@miesoun.shop', role: 'Administrator' }];
-    tbody.innerHTML = users.map(u => `<tr><td>${u.id}</td><td>${u.name}</td><td>${u.email}</td><td>${u.role}</td><td class="actions">-</td></tr>`).join('');
-}
 
-function renderAll() { renderProducts(); renderTestimonials(); renderGallery(); renderUsers(); }
+function renderAll() { renderProducts(); renderTestimonials(); renderGallery(); }
 
 // ============================================================
 // CRUD (DELETE, EDIT, OPEN MODAL, SAVE)
