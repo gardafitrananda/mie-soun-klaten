@@ -33,12 +33,18 @@ function activateTab(tab) {
         products: 'Manajemen Produk',
         testimonials: 'Manajemen Testimoni',
         gallery: 'Manajemen Galeri',
+        content: 'Edit Konten Halaman Utama', // Tambahan judul untuk tab konten
         users: 'Manajemen User'
     };
     document.getElementById('pageTitle').textContent = titles[tab] || 'Dashboard';
 
-    // Sembunyikan tombol tambah di tab users
-    document.getElementById('btnAdd').style.display = tab === 'users' ? 'none' : 'inline-flex';
+    // Sembunyikan tombol tambah di tab users DAN tab content
+    document.getElementById('btnAdd').style.display = (tab === 'users' || tab === 'content') ? 'none' : 'inline-flex';
+
+    // Jika tab konten dibuka, pastikan datanya dimuat
+    if (tab === 'content') {
+        loadContentToAdmin();
+    }
 
     // Simpan ke localStorage agar tab tetap aktif setelah refresh
     localStorage.setItem('admin_active_tab', tab);
@@ -279,19 +285,6 @@ async function fetchAllDataToAdmin() {
 }
 
 // ============================================================
-// INIT — BACA TAB TERAKHIR DARI localStorage
-// ============================================================
-(async function init() {
-    // Ambil tab terakhir yang disimpan, default 'products'
-    const savedTab = localStorage.getItem('admin_active_tab') || 'products';
-    // Aktifkan tab tersebut
-    activateTab(savedTab);
-    // Ambil data dari API
-    await fetchAllDataToAdmin();
-    // Pastikan tombol tambah sesuai dengan tab
-    document.getElementById('btnAdd').style.display = savedTab === 'users' ? 'none' : 'inline-flex';
-})();
-// ============================================================
 // KONTEN WEB (LANDING PAGE CMS)
 // ============================================================
 async function loadContentToAdmin() {
@@ -342,5 +335,17 @@ async function saveContent() {
     } catch (err) { console.error(err); }
 }
 
-// Panggil fungsi ini agar form terisi saat dashboard dibuka
-loadContentToAdmin();
+
+// ============================================================
+// INIT — BACA TAB TERAKHIR DARI localStorage
+// ============================================================
+(async function init() {
+    // Ambil tab terakhir yang disimpan, default 'products'
+    const savedTab = localStorage.getItem('admin_active_tab') || 'products';
+    // Aktifkan tab tersebut
+    activateTab(savedTab);
+    // Ambil data dari API
+    await fetchAllDataToAdmin();
+    // Pastikan tombol tambah sesuai dengan tab (sudah dihandle di activateTab, tapi kita pastikan lagi saat load awal)
+    document.getElementById('btnAdd').style.display = (savedTab === 'users' || savedTab === 'content') ? 'none' : 'inline-flex';
+})();

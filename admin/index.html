@@ -97,26 +97,46 @@
      </div>
  </div>
 
-        <!-- Panel: Konten Web -->
-<div class="panel" id="panel-content" style="display:none;">
-    <div class="card" style="max-width: 800px;">
-        <h3 style="margin-bottom: 20px;">Edit Konten Halaman Utama</h3>
-        <div class="form-group"><label>Judul Utama (Hero)</label><input id="c_hero_title" /></div>
-        <div class="form-group"><label>Sub-judul (Hero)</label><input id="c_hero_subtitle" /></div>
-        <div class="form-group"><label>Teks Tentang Kami</label><textarea id="c_about_text" rows="5"></textarea></div>
-
-        <div class="form-group" style="background:#f9f9f9; padding:1rem; border-radius:8px; border:1px dashed #ccc;">
-            <label>Foto Latar Utama (Hero Image)</label>
-            <input type="file" accept="image/*" onchange="previewHeroImage(this)" style="margin-bottom:10px;" />
-            <input type="hidden" id="c_hero_image" />
-            <div><img id="c_img_preview" src="" style="max-height:150px; border-radius:5px;"></div>
+       <!-- Panel: Konten Web -->
+    <div class="panel" id="panel-content" style="display:none;">
+        <div class="card" style="max-width: 800px; padding: 2rem; border-radius: 12px; box-shadow: 0 4px 6px rgba(0,0,0,0.05);">
+            <h3 style="margin-top: 0; margin-bottom: 25px; color: #333; border-bottom: 2px solid #f0f0f0; padding-bottom: 15px;">
+                <i class="fas fa-edit" style="color: #FF7043; margin-right: 8px;"></i> Edit Konten Halaman Utama
+            </h3>
+            
+            <div style="margin-bottom: 1.5rem;">
+                <label style="display: block; font-weight: bold; margin-bottom: 8px; color: #444;">Judul Utama (Hero)</label>
+                <input id="c_hero_title" type="text" style="width: 100%; padding: 12px; border: 1px solid #ccc; border-radius: 6px; box-sizing: border-box; font-size: 1rem; font-family: inherit;" />
+            </div>
+            
+            <div style="margin-bottom: 1.5rem;">
+                <label style="display: block; font-weight: bold; margin-bottom: 8px; color: #444;">Sub-judul (Hero)</label>
+                <input id="c_hero_subtitle" type="text" style="width: 100%; padding: 12px; border: 1px solid #ccc; border-radius: 6px; box-sizing: border-box; font-size: 1rem; font-family: inherit;" />
+            </div>
+            
+            <div style="margin-bottom: 1.5rem;">
+                <label style="display: block; font-weight: bold; margin-bottom: 8px; color: #444;">Teks Tentang Kami</label>
+                <textarea id="c_about_text" rows="6" style="width: 100%; padding: 12px; border: 1px solid #ccc; border-radius: 6px; box-sizing: border-box; font-size: 1rem; font-family: inherit; resize: vertical; line-height: 1.5;"></textarea>
+            </div>
+            
+            <div style="margin-bottom: 2rem; background: #f9fafb; padding: 1.5rem; border-radius: 8px; border: 2px dashed #d1d5db;">
+                <label style="display: block; font-weight: bold; margin-bottom: 5px; color: #444;">Foto Latar Utama (Hero Image)</label>
+                <p style="font-size: 0.85rem; color: #6b7280; margin-top: 0; margin-bottom: 15px;">*Gambar akan otomatis dikompres jika ukurannya terlalu besar.</p>
+                <input type="file" accept="image/*" onchange="previewHeroImage(this)" style="margin-bottom: 15px; width: 100%;" />
+                <input type="hidden" id="c_hero_image" />
+                <div style="text-align: center; background: #fff; padding: 10px; border-radius: 6px; border: 1px solid #e5e7eb;">
+                    <!-- Gambar preview (otomatis disembunyikan jika kosong agar tidak muncul icon error) -->
+                    <img id="c_img_preview" src="" style="max-height: 250px; max-width: 100%; border-radius: 5px; display: none;" onload="this.style.display='inline-block'; document.getElementById('c_img_placeholder').style.display='none';" onerror="this.style.display='none'">
+                    <span id="c_img_placeholder" style="color: #9ca3af; font-size: 0.9rem; display: inline-block; padding: 20px 0;">Belum ada gambar terpilih</span>
+                </div>
+            </div>
+            
+            <!-- TOMBOL SIMPAN -->
+            <button onclick="saveContent()" style="background: #FF7043; color: white; padding: 14px 20px; border: none; border-radius: 8px; cursor: pointer; font-weight: bold; font-size: 1.1rem; width: 100%; transition: background 0.3s; box-shadow: 0 4px 6px rgba(255, 112, 67, 0.2);">
+                <i class="fas fa-save" style="margin-right: 8px;"></i> Simpan Perubahan Konten
+            </button>
         </div>
-
-        <button onclick="saveContent()" style="background: var(--orange); color: white; padding: 10px 20px; border: none; border-radius: 5px; cursor: pointer; font-weight: bold; width: 100%;">
-            Simpan Perubahan Konten
-        </button>
     </div>
-</div>
 
         <!-- Panel: Users -->
         <div class="panel" id="panel-users" style="display:none;">
