@@ -23,36 +23,34 @@
 <div class="login-box">
     <h2>🍜 Admin Login</h2>
     <div class="form-group">
-        <label>Email</label>
-        <input type="email" id="email" placeholder="Masukkan email">
+        <label>Nama Admin</label>
+        <input type="text" id="name" placeholder="Masukkan nama">
     </div>
     <div class="form-group">
         <label>Password</label>
         <input type="password" id="password" placeholder="Masukkan password">
     </div>
     <button class="btn-login" id="btnLogin" onclick="prosesLogin()">Masuk Dashboard</button>
-    <div class="error-msg" id="errorMsg">Email atau password salah!</div>
+    <div class="error-msg" id="errorMsg">Nama atau password salah!</div>
 </div>
 
 <script>
-    // Cek jika sudah login, langsung tendang ke admin
     if (localStorage.getItem('admin_token')) {
         window.location.href = '/admin/index.html';
     }
 
     async function prosesLogin() {
-        const emailInput = document.getElementById('email').value;
+        const nameInput = document.getElementById('name').value;
         const passInput = document.getElementById('password').value;
         const btn = document.getElementById('btnLogin');
         const errorMsg = document.getElementById('errorMsg');
 
-        // Reset tampilan pesan error & ubah status tombol
         errorMsg.style.display = 'none';
         btn.innerHTML = 'Memeriksa...';
         btn.disabled = true;
 
-        if(!emailInput || !passInput) {
-            errorMsg.textContent = "Email dan password wajib diisi!";
+        if(!nameInput || !passInput) {
+            errorMsg.textContent = "Nama dan password wajib diisi!";
             errorMsg.style.display = 'block';
             btn.innerHTML = 'Masuk Dashboard';
             btn.disabled = false;
@@ -60,29 +58,24 @@
         }
 
         try {
-            // Mengirim request ke API backend
             const response = await fetch('/api/login', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ email: emailInput, password: passInput })
+                body: JSON.stringify({ name: nameInput, password: passInput })
             });
 
             const result = await response.json();
 
             if (response.ok && result.success) {
-                // Simpan token login (bisa dari database/JWT jika ada, atau pakai token dummy sementara)
                 localStorage.setItem('admin_token', result.token || 'miesecret2026');
                 
-                // PENTING: Simpan data user yang login agar profil di sidebar (inisial, nama, role) bisa berubah otomatis!
                 if(result.data) {
                     localStorage.setItem('user', JSON.stringify(result.data));
                 }
 
-                // Arahkan ke halaman admin
                 window.location.href = '/admin/index.html';
             } else {
-                // Tampilkan pesan error dari backend
-                errorMsg.textContent = result.error || 'Email atau password salah!';
+                errorMsg.textContent = result.error || 'Nama atau password salah!';
                 errorMsg.style.display = 'block';
             }
         } catch (error) {
@@ -94,10 +87,7 @@
         }
     }
 
-    // Login pakai tombol Enter
     document.addEventListener('keypress', function(e) {
         if (e.key === 'Enter') prosesLogin();
     });
 </script>
-</body>
-</html>
