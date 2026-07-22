@@ -224,9 +224,14 @@
         <!-- Panel: User -->
         <div class="panel" id="panel-users" style="display:none;">
             <div class="card">
-                <h3 style="margin-top: 0; margin-bottom: 20px; border-bottom: 2px solid #f0f0f0; padding-bottom: 15px; color: #333;">
-                    <i class="fas fa-users" style="color: #FF7043;"></i> Daftar Admin (User)
-                </h3>
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 0; margin-bottom: 20px; border-bottom: 2px solid #f0f0f0; padding-bottom: 15px;">
+                    <h3 style="margin: 0; color: #333;">
+                        <i class="fas fa-users" style="color: #FF7043;"></i> Daftar Admin (User)
+                    </h3>
+                    <button onclick="openAddUser()" style="background: #28a745; color: white; border: none; padding: 8px 15px; border-radius: 5px; cursor: pointer; font-weight: bold; box-shadow: 0 2px 4px rgba(40,167,69,0.2); transition: 0.2s;">
+                        <i class="fas fa-plus" style="margin-right: 5px;"></i> Tambah User
+                    </button>
+                </div>
                 <table style="width: 100%; text-align: left; border-collapse: collapse;">
                     <thead>
                         <tr style="background-color: #f9f9f9;">

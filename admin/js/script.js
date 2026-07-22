@@ -441,130 +441,150 @@ async function saveContent() {
     document.getElementById('btnAdd').style.display = (savedTab === 'users' || savedTab === 'content') ? 'none' : 'inline-flex';
 })();
 
+// --- 1. FUNGSI UNTUK MEMUAT DATA DAN TOMBOL AKSI ---
 async function loadUsers() {
     const tbody = document.getElementById('usersBody');
-    if (!tbody) return; // Hentikan jika elemen tabel belum dirender
+    if (!tbody) return;
 
-    // Tampilan saat loading dibuat lebih rapi
-    tbody.innerHTML = '<tr><td colspan="5" style="text-align:center; padding:30px; color:#888;"><i class="fas fa-spinner fa-spin" style="margin-right:8px;"></i> Memuat data user...</td></tr>';
+    tbody.innerHTML = '<tr><td colspan="5" style="text-align:center; padding:20px;">Memuat data...</td></tr>';
 
     try {
         const response = await fetch('/api/users');
         const result = await response.json();
 
         if (result.success) {
-            tbody.innerHTML = ''; // Kosongkan tulisan "Memuat"
-            
+            tbody.innerHTML = '';
             result.data.forEach(user => {
-                // Antisipasi perbedaan huruf besar/kecil dari database
-                const userRole = (user.role || '').toLowerCase().replace(/\s/g, ''); 
-
-                // Menentukan warna badge berdasarkan role
-                const roleBadge = (userRole === 'superadmin')
-                    ? '<span style="background: #fee2e2; color: #ef4444; padding: 6px 12px; border-radius: 20px; font-size: 12px; font-weight: bold; display: inline-block;"><i class="fas fa-shield-alt" style="margin-right:4px;"></i> Super Admin</span>'
-                    : '<span style="background: #e0f2fe; color: #0284c7; padding: 6px 12px; border-radius: 20px; font-size: 12px; font-weight: bold; display: inline-block;"><i class="fas fa-user" style="margin-right:4px;"></i> Admin</span>';
-
                 const tr = document.createElement('tr');
-                
-                // Efek hover sederhana pada baris tabel agar terasa interaktif
-                tr.style.transition = "background-color 0.2s ease";
-                tr.onmouseover = () => tr.style.backgroundColor = "#fafafa";
-                tr.onmouseout = () => tr.style.backgroundColor = "transparent";
-
-                // Perhatikan pemanggilan variabel ${roleBadge} dan pembagian width/padding
                 tr.innerHTML = `
-                    <td style="padding: 16px 12px; border-bottom: 1px solid #f0f0f0; text-align: center; color: #666; font-weight: bold; width: 5%;">${user.id}</td>
-                    <td style="padding: 16px 12px; border-bottom: 1px solid #f0f0f0; color: #333; font-weight: 500;">${user.name}</td>
-                    <td style="padding: 16px 12px; border-bottom: 1px solid #f0f0f0; color: #555;">${user.email}</td>
-                    <td style="padding: 16px 12px; border-bottom: 1px solid #f0f0f0;">${roleBadge}</td>
-                    <td style="padding: 16px 12px; border-bottom: 1px solid #f0f0f0; text-align: center; width: 10%;">
-                        <button onclick="editUser('${user.id}', '${user.name}', '${user.email}', '${user.role}')" style="background: #FF7043; color: white; border: none; padding: 8px 14px; border-radius: 6px; cursor: pointer; transition: 0.2s; box-shadow: 0 2px 4px rgba(255,112,67,0.2);" title="Edit Data User">
+                    <td style="padding: 12px; border-bottom: 1px solid #eee; text-align: center;">${user.id}</td>
+                    <td style="padding: 12px; border-bottom: 1px solid #eee;">${user.name}</td>
+                    <td style="padding: 12px; border-bottom: 1px solid #eee;">${user.email}</td>
+                    <td style="padding: 12px; border-bottom: 1px solid #eee; text-transform: capitalize;">${user.role}</td>
+                    <td style="padding: 12px; border-bottom: 1px solid #eee; text-align: center;">
+                        <!-- Tombol Edit -->
+                        <button onclick="editUser('${user.id}', '${user.name}', '${user.email}', '${user.role}')" style="background: #FF7043; color: white; border: none; padding: 6px 10px; border-radius: 4px; cursor: pointer; margin-right: 5px;" title="Edit">
                             <i class="fas fa-edit"></i>
+                        </button>
+                        <!-- Tombol Hapus -->
+                        <button onclick="deleteUser('${user.id}')" style="background: #dc3545; color: white; border: none; padding: 6px 10px; border-radius: 4px; cursor: pointer;" title="Hapus">
+                            <i class="fas fa-trash"></i>
                         </button>
                     </td>
                 `;
                 tbody.appendChild(tr);
             });
         } else {
-            tbody.innerHTML = `<tr><td colspan="5" style="text-align:center; color:#ef4444; padding:30px;"><i class="fas fa-exclamation-triangle"></i> Gagal memuat: ${result.error}</td></tr>`;
+            tbody.innerHTML = `<tr><td colspan="5" style="text-align:center; color:red;">Gagal memuat data</td></tr>`;
         }
     } catch (error) {
-        console.error("Error fetching users:", error);
-        tbody.innerHTML = '<tr><td colspan="5" style="text-align:center; color:#ef4444; padding:30px;"><i class="fas fa-wifi"></i> Terjadi kesalahan jaringan. Cek console.</td></tr>';
+        tbody.innerHTML = '<tr><td colspan="5" style="text-align:center; color:red;">Terjadi kesalahan jaringan</td></tr>';
     }
 }
-// Memunculkan Modal dengan Form Edit User
-function editUser(id, name, email, role) {
-    document.getElementById('modalTitle').textContent = 'Edit User';
-    
-    // Injeksi form ke dalam body modal
-    document.getElementById('modalBody').innerHTML = `
-        <input type="hidden" id="editUserId" value="${id}">
-        
-        <label style="display:block; margin-bottom:5px; font-weight:bold;">Nama Lengkap</label>
-        <input type="text" id="editUserName" value="${name}" style="width:100%; padding:10px; margin-bottom:15px; border:1px solid #ccc; border-radius:6px;">
-        
-        <label style="display:block; margin-bottom:5px; font-weight:bold;">Email</label>
-        <input type="email" id="editUserEmail" value="${email}" style="width:100%; padding:10px; margin-bottom:15px; border:1px solid #ccc; border-radius:6px;">
-        
-        <label style="display:block; margin-bottom:5px; font-weight:bold;">Role</label>
-        <select id="editUserRole" style="width:100%; padding:10px; margin-bottom:15px; border:1px solid #ccc; border-radius:6px;">
-            <option value="superadmin" ${role === 'superadmin' ? 'selected' : ''}>Super Admin</option>
-            <option value="admin" ${role === 'admin' ? 'selected' : ''}>Admin</option>
-        </select>
 
-        <label style="display:block; margin-bottom:5px; font-weight:bold;">Password Baru <span style="color:#888; font-size:12px; font-weight:normal;">(Kosongkan jika tidak diubah)</span></label>
-        <input type="password" id="editUserPassword" placeholder="Ketik password baru..." style="width:100%; padding:10px; margin-bottom:15px; border:1px solid #ccc; border-radius:6px;">
-    `;
-    
-    // Arahkan tombol simpan di modal untuk menjalankan fungsi update
-    document.getElementById('saveBtn').onclick = saveUser;
-    
-    // Tampilkan modal
+// --- 2. FUNGSI UNTUK MEMBUKA MODAL TAMBAH USER ---
+function openAddUser() {
+    document.getElementById('modalTitle').textContent = 'Tambah User Baru';
+    document.getElementById('modalBody').innerHTML = generateFormHtml('', '', '', 'admin', true);
+    document.getElementById('saveBtn').onclick = () => saveUser('POST'); // Gunakan metode POST untuk tambah
     document.getElementById('modal').style.display = 'flex';
 }
 
-// Mengirim Data Hasil Edit ke Database
-async function saveUser() {
-    const id = document.getElementById('editUserId').value;
-    const name = document.getElementById('editUserName').value;
-    const email = document.getElementById('editUserEmail').value;
-    const role = document.getElementById('editUserRole').value;
-    const password = document.getElementById('editUserPassword').value;
+// --- 3. FUNGSI UNTUK MEMBUKA MODAL EDIT USER ---
+function editUser(id, name, email, role) {
+    document.getElementById('modalTitle').textContent = 'Edit User';
+    document.getElementById('modalBody').innerHTML = generateFormHtml(id, name, email, role, false);
+    document.getElementById('saveBtn').onclick = () => saveUser('PUT'); // Gunakan metode PUT untuk edit
+    document.getElementById('modal').style.display = 'flex';
+}
+
+// Helper untuk menghasilkan HTML Form (Mencegah kode berulang)
+function generateFormHtml(id, name, email, role, isAdd) {
+    const passwordLabel = isAdd ? 'Password' : 'Password Baru (Kosongkan jika tidak diubah)';
+    const passwordRequired = isAdd ? 'required' : '';
+    
+    return `
+        <input type="hidden" id="formUserId" value="${id}">
+        <label style="display:block; margin-bottom:5px; font-weight:bold;">Nama Lengkap</label>
+        <input type="text" id="formUserName" value="${name}" style="width:100%; padding:10px; margin-bottom:15px; border:1px solid #ccc; border-radius:6px;">
+        
+        <label style="display:block; margin-bottom:5px; font-weight:bold;">Email</label>
+        <input type="email" id="formUserEmail" value="${email}" style="width:100%; padding:10px; margin-bottom:15px; border:1px solid #ccc; border-radius:6px;">
+        
+        <label style="display:block; margin-bottom:5px; font-weight:bold;">Role</label>
+        <select id="formUserRole" style="width:100%; padding:10px; margin-bottom:15px; border:1px solid #ccc; border-radius:6px;">
+            <option value="administrator" ${role === 'administrator' ? 'selected' : ''}>Administrator</option>
+            <option value="admin" ${role === 'admin' ? 'selected' : ''}>Admin Biasa</option>
+        </select>
+
+        <label style="display:block; margin-bottom:5px; font-weight:bold;">${passwordLabel}</label>
+        <input type="password" id="formUserPassword" placeholder="Ketik password..." ${passwordRequired} style="width:100%; padding:10px; margin-bottom:15px; border:1px solid #ccc; border-radius:6px;">
+    `;
+}
+
+// --- 4. FUNGSI MENYIMPAN (TAMBAH / EDIT) KE DATABASE ---
+async function saveUser(methodType) {
+    const id = document.getElementById('formUserId').value;
+    const name = document.getElementById('formUserName').value;
+    const email = document.getElementById('formUserEmail').value;
+    const role = document.getElementById('formUserRole').value;
+    const password = document.getElementById('formUserPassword').value;
+
+    if (methodType === 'POST' && !password) {
+        alert("Password wajib diisi untuk user baru!");
+        return;
+    }
 
     const btn = document.getElementById('saveBtn');
-    btn.innerHTML = 'Menyimpan...';
-    btn.disabled = true;
+    btn.innerHTML = 'Menyimpan...'; btn.disabled = true;
 
     try {
         const response = await fetch('/api/users', {
-            method: 'PUT',
+            method: methodType, // Bisa 'POST' (Tambah) atau 'PUT' (Edit)
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ id, name, email, role, password })
         });
-
         const result = await response.json();
 
         if (response.ok && result.success) {
             closeModal();
-            loadUsers(); // Refresh tabel otomatis
+            loadUsers(); // Refresh tabel
         } else {
-            alert('Gagal menyimpan: ' + (result.error || 'Unknown error'));
+            alert('Gagal: ' + (result.error || 'Terjadi kesalahan'));
         }
     } catch (error) {
-        console.error('Error saat simpan user:', error);
-        alert('Terjadi kesalahan pada sistem.');
+        alert('Kesalahan sistem jaringan.');
     } finally {
-        btn.innerHTML = 'Simpan';
-        btn.disabled = false;
+        btn.innerHTML = 'Simpan'; btn.disabled = false;
     }
 }
-// Fungsi untuk menyembunyikan/menutup modal
+
+// --- 5. FUNGSI MENGHAPUS USER ---
+async function deleteUser(id) {
+    if (!confirm('Apakah Anda yakin ingin menghapus user ini?')) return;
+
+    try {
+        const response = await fetch('/api/users', {
+            method: 'DELETE',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ id })
+        });
+        const result = await response.json();
+
+        if (response.ok && result.success) {
+            loadUsers(); // Refresh tabel setelah dihapus
+        } else {
+            alert('Gagal menghapus user: ' + result.error);
+        }
+    } catch (error) {
+        alert('Terjadi kesalahan saat menghapus data.');
+    }
+}
+
+// Pastikan fungsi closeModal tetap ada
 function closeModal() {
     const modal = document.getElementById('modal');
-    if (modal) {
-        modal.style.display = 'none';
-    }
+    if (modal) modal.style.display = 'none';
 }
 
 // (Opsional) Fitur tambahan: Tutup modal otomatis jika user mengklik area gelap di luarnya
