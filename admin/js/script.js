@@ -588,3 +588,24 @@ window.onclick = function(event) {
         closeModal();
     }
 }
+// Fungsi untuk memuat data statistik dari database
+async function loadAnalyticsDashboard() {
+    try {
+        const response = await fetch('/api/analytics');
+        const result = await response.json();
+        
+        if (response.ok && result.success) {
+            // Animasi angka atau langsung masukkan teks
+            document.getElementById('countUsers').innerText = result.data.users;
+            document.getElementById('countProducts').innerText = result.data.products;
+            document.getElementById('countTestimonials').innerText = result.data.testimonials;
+        }
+    } catch (error) {
+        console.error("Gagal mengambil data analitik:", error);
+    }
+}
+
+// Jalankan fungsi ini saat dashboard pertama kali dimuat
+document.addEventListener('DOMContentLoaded', () => {
+    loadAnalyticsDashboard();
+});
