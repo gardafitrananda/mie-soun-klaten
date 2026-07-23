@@ -7,6 +7,8 @@ if (localStorage.getItem('admin_token') !== 'miesecret2026') {
 
 function logoutAdmin() {
     localStorage.removeItem('admin_token');
+    localStorage.removeItem('user'); // Hapus data profil user
+    localStorage.removeItem('admin_active_tab'); // Hapus ingatan tab terakhir
     window.location.href = '/admin/login.html';
 }
 
@@ -425,7 +427,48 @@ async function saveContent() {
         if (response.ok) alert('Seluruh Konten Halaman Berhasil Diperbarui!');
     } catch (err) { console.error(err); }
 }
+// ============================================================
+// FUNGSI UPDATE PROFIL SIDEBAR
+// ============================================================
+function updateSidebarProfile() {
+    // Default nilai jika tidak ada data
+    let userName = 'Admin';
+    let userRole = 'Administrator';
 
+    // Ambil data JSON dari localStorage
+    const userStr = localStorage.getItem('user');
+    
+    if (userStr) {
+        try {
+            // Ubah string JSON kembali menjadi objek JavaScript
+            const userData = JSON.parse(userStr);
+            if (userData.name) userName = userData.name;
+            if (userData.role) userRole = userData.role;
+        } catch (e) {
+            console.error("Gagal membaca data user:", e);
+        }
+    }
+
+    // Ambil elemen HTML
+    const nameEl = document.querySelector('.user .name');
+    const roleEl = document.querySelector('.user .role');
+    const avatarEl = document.querySelector('.user .avatar');
+
+    // Terapkan data ke HTML
+    if (nameEl) nameEl.textContent = userName;
+    if (roleEl) {
+        roleEl.textContent = userRole;
+        roleEl.style.textTransform = 'capitalize'; // Membuat huruf awalnya kapital (cth: admin -> Admin)
+    }
+    
+    // Terapkan huruf inisial ke lingkaran (Avatar)
+    if (avatarEl) {
+        avatarEl.textContent = userName.charAt(0).toUpperCase();
+        // Memastikan warna latar belakang avatar sesuai dengan tema (oranye)
+        avatarEl.style.backgroundColor = '#FF7043'; 
+        avatarEl.style.color = '#fff';
+    }
+}
 
 // ============================================================
 // INIT — BACA TAB TERAKHIR DARI localStorage
@@ -439,6 +482,9 @@ async function saveContent() {
     await fetchAllDataToAdmin();
     // Pastikan tombol tambah sesuai dengan tab (sudah dihandle di activateTab, tapi kita pastikan lagi saat load awal)
     document.getElementById('btnAdd').style.display = (savedTab === 'users' || savedTab === 'content') ? 'none' : 'inline-flex';
+
+    // Update profil sidebar
+    updateSidebarProfile();
 })();
 
 // --- 1. FUNGSI UNTUK MEMUAT DATA DAN TOMBOL AKSI ---
