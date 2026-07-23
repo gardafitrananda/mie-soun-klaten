@@ -26,26 +26,32 @@ function activateTab(tab) {
 
     // Tampilkan panel yang sesuai
     document.querySelectorAll('.panel').forEach(p => p.style.display = 'none');
-    document.getElementById('panel-' + tab).style.display = 'block';
+    
+    // Pastikan elemen panel ada sebelum mengubah style-nya
+    const activePanel = document.getElementById('panel-' + tab);
+    if(activePanel) activePanel.style.display = 'block';
 
     // Update judul
     const titles = {
         products: 'Manajemen Produk',
         testimonials: 'Manajemen Testimoni',
         gallery: 'Manajemen Galeri',
-        content: 'Edit Konten Halaman Utama', // Tambahan judul untuk tab konten
-        users: 'Manajemen User'
+        content: 'Edit Konten Halaman Utama',
+        users: 'Manajemen User',
+        analytics: 'Analitik & Laporan' // <-- Tambahan untuk tab analitik
     };
     document.getElementById('pageTitle').textContent = titles[tab] || 'Dashboard';
 
-    // Sembunyikan tombol tambah di tab users DAN tab content
-    document.getElementById('btnAdd').style.display = (tab === 'users' || tab === 'content') ? 'none' : 'inline-flex';
+    // Sembunyikan tombol tambah di tab users, content, DAN analytics
+    document.getElementById('btnAdd').style.display = (tab === 'users' || tab === 'content' || tab === 'analytics') ? 'none' : 'inline-flex';
 
-    // Jika tab konten dibuka, pastikan datanya dimuat
+    // Jika tab tertentu dibuka, pastikan datanya dimuat
     if (tab === 'content') {
         loadContentToAdmin();
     } else if (tab === 'users') {
         loadUsers(); 
+    } else if (tab === 'analytics') {
+        loadAnalyticsDashboard(); // <-- Pastikan angka 3 kotak refresh saat tab analitik dibuka
     }
 
     // Simpan ke localStorage agar tab tetap aktif setelah refresh

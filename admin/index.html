@@ -21,7 +21,9 @@
             <a href="#" data-tab="testimonials"><i class="fas fa-star"></i> Testimoni</a>
             <a href="#" data-tab="gallery"><i class="fas fa-images"></i> Galeri</a>
             <a href="#" data-tab="content"><i class="fas fa-globe"></i> Konten Web</a>
+            <a href="#" data-tab="analytics"><i class="fas fa-chart-pie"></i> Analitik</a>
             <a href="#" data-tab="users"><i class="fas fa-users-cog"></i> User</a>
+            
         </nav>
         
         <!-- Bagian User Info & Logout (Digabungkan agar rapi) -->
@@ -48,29 +50,7 @@
     <!-- ===== MAIN ===== -->
     <div class="main">
 
-        <!-- KOTAK ANALITIK (Letakkan di dalam div area konten utama) -->
-        <div class="analytics-container" style="display: flex; gap: 20px; margin-bottom: 30px;">
-            
-            <div style="flex: 1; padding: 20px; background: #fff; border-radius: 8px; border-left: 5px solid #4CAF50; box-shadow: 0 2px 5px rgba(0,0,0,0.1);">
-                <h3 style="margin: 0; color: #555; font-size: 14px;">Total Admin Aktif</h3>
-                <h1 id="countUsers" style="margin: 10px 0 0 0; color: #333; font-size: 32px;">0</h1>
-            </div>
-
-            <div style="flex: 1; padding: 20px; background: #fff; border-radius: 8px; border-left: 5px solid #2196F3; box-shadow: 0 2px 5px rgba(0,0,0,0.1);">
-                <h3 style="margin: 0; color: #555; font-size: 14px;">Total Menu Produk</h3>
-                <h1 id="countProducts" style="margin: 10px 0 0 0; color: #333; font-size: 32px;">0</h1>
-            </div>
-
-            <div style="flex: 1; padding: 20px; background: #fff; border-radius: 8px; border-left: 5px solid #FF9800; box-shadow: 0 2px 5px rgba(0,0,0,0.1);">
-                <h3 style="margin: 0; color: #555; font-size: 14px;">Total Testimoni</h3>
-                <h1 id="countTestimonials" style="margin: 10px 0 0 0; color: #333; font-size: 32px;">0</h1>
-            </div>
-
-        </div>
-        <div class="ga4-dashboard" style="margin-top: 40px;">
-            <h2>Laporan Lalu Lintas Pengunjung (GA4)</h2>
-            <iframe width="600" height="450" src="https://datastudio.google.com/embed/reporting/0fa62327-eafc-4457-b40e-b5852be5b6ae/page/CXb4F" frameborder="0" style="border:0" allowfullscreen sandbox="allow-storage-access-by-user-activation allow-scripts allow-same-origin allow-popups allow-popups-to-escape-sandbox"></iframe>
-        </div>
+       
         <!-- Header -->
         <div class="header">
             <div style="display:flex;align-items:center;gap:12px;">
@@ -244,6 +224,37 @@
         </div>
     </div>
 
+        <!-- Panel: Analitik -->
+        <div class="panel" id="panel-analytics" style="display:none;">
+            <div class="card" style="padding: 20px; background: transparent; border: none; box-shadow: none;">
+                
+                <!-- Kotak 3 Angka -->
+                <div class="analytics-container" style="display: flex; gap: 20px; margin-bottom: 30px;">
+                    <div style="flex: 1; padding: 20px; background: #fff; border-radius: 8px; border-left: 5px solid #4CAF50; box-shadow: 0 2px 5px rgba(0,0,0,0.1);">
+                        <h3 style="margin: 0; color: #555; font-size: 14px;">Total Admin Aktif</h3>
+                        <h1 id="countUsers" style="margin: 10px 0 0 0; color: #333; font-size: 32px;">0</h1>
+                    </div>
+                    <div style="flex: 1; padding: 20px; background: #fff; border-radius: 8px; border-left: 5px solid #2196F3; box-shadow: 0 2px 5px rgba(0,0,0,0.1);">
+                        <h3 style="margin: 0; color: #555; font-size: 14px;">Total Menu Produk</h3>
+                        <h1 id="countProducts" style="margin: 10px 0 0 0; color: #333; font-size: 32px;">0</h1>
+                    </div>
+                    <div style="flex: 1; padding: 20px; background: #fff; border-radius: 8px; border-left: 5px solid #FF9800; box-shadow: 0 2px 5px rgba(0,0,0,0.1);">
+                        <h3 style="margin: 0; color: #555; font-size: 14px;">Total Testimoni</h3>
+                        <h1 id="countTestimonials" style="margin: 10px 0 0 0; color: #333; font-size: 32px;">0</h1>
+                    </div>
+                </div>
+
+                <!-- Dashboard GA4 Looker Studio -->
+                <div class="ga4-dashboard" style="background: #fff; padding: 20px; border-radius: 8px; box-shadow: 0 2px 5px rgba(0,0,0,0.1);">
+                    <h2 style="margin-top: 0; border-bottom: 2px solid #f0f0f0; padding-bottom: 15px; color: #333;">
+                        <i class="fas fa-chart-line" style="color: #FF7043;"></i> Laporan Lalu Lintas Pengunjung (GA4)
+                    </h2>
+                    <!-- Width diubah 100% agar responsif penuh -->
+                    <iframe width="100%" height="600" src="https://datastudio.google.com/embed/reporting/0fa62327-eafc-4457-b40e-b5852be5b6ae/page/CXb4F" frameborder="0" style="border:0" allowfullscreen sandbox="allow-storage-access-by-user-activation allow-scripts allow-same-origin allow-popups allow-popups-to-escape-sandbox"></iframe>
+                </div>
+                
+            </div>
+        </div>
         <!-- Panel: User -->
         <div class="panel" id="panel-users" style="display:none;">
             <div class="card">
